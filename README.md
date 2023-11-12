@@ -1,1 +1,1 @@
-Uebung 1 ist unter dem tag "uebung01" zu finden 
+Übung 1 ist unter dem tag "uebung01" zu finden 
