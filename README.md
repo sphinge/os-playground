@@ -15,4 +15,4 @@ in ./make_kernel:
 - Modularisierung 
 - printf um %d erweitert (Positiv und Negativ)
 - in DBGU funktionen int_to_decimal und printBinaryDBGU hinzugefügt
-- in DBGU sleep funktion ist experimentell, funktioniert zwar, aber nicht akkurat an den eingegebenen Zeitwert
+- in DBGU sleep funktion ist experimentell, funktioniert zwar, aber nicht akkurat an den eingegebenen Zeitwert (Warnings von sleep() ignorieren)
