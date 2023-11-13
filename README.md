@@ -2,6 +2,7 @@
 
 # How to use:
 in ./make_kernel:
+
  make kernel	-- Baut den Kernel.
 
  make clean	-- Löscht alle erzeugten Dateien.
