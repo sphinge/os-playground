@@ -3,13 +3,13 @@
 # How to use:
 in ./make_kernel:
 
- make kernel	-- Baut den Kernel.
+ **make kernel**	-- Baut den Kernel.
 
- make clean	-- Löscht alle erzeugten Dateien.
+ **make clean**	-- Löscht alle erzeugten Dateien.
 
- make run   -- Führt qemu aus.
+ **make run**   -- Führt qemu aus.
 
- make clean_kernel_run    -- Führt clean, kernel und run hintereinander aus.
+ **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
 
 # Changes:
 - Modularisierung 
