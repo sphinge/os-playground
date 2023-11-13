@@ -1,6 +1,6 @@
 Übung 1 ist unter dem tag "uebung01" zu finden 
 
-#How to use:
+# How to use:
 in ./make_kernel:
  make kernel	-- Baut den Kernel.
 
@@ -10,7 +10,7 @@ in ./make_kernel:
 
  make clean_kernel_run    -- Führt clean, kernel und run hintereinander aus.
 
-#Changes:
+# Changes:
 - Modularisierung 
 - printf um %d erweitert (Positiv und Negativ)
 - in DBGU funktionen int_to_decimal und printBinaryDBGU hinzugefügt
