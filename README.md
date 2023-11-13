@@ -12,6 +12,7 @@ in ./make_kernel:
  **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
 
 # Changes:
+- Makefile sollte den Library export jetzt auch machen
 - Modularisierung 
 - printf um %d erweitert (Positiv und Negativ)
 - in DBGU funktionen int_to_decimal und printBinaryDBGU hinzugefügt
