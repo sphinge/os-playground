@@ -2,13 +2,13 @@
 # Kurzanleitung
 # =============
 #
-# make		-- Baut den Kernel.
-# make all
-#
-# make install	-- Baut den Kernel und transferiert ihn auf den Server.
-# 		   Das Board holt sich diesen Kernel beim nächsten Reset.
+# make kernel	-- Baut den Kernel.
 #
 # make clean	-- Löscht alle erzeugten Dateien.
+#
+# make run   -- Führt qemu aus.
+#
+# make clean_kernel_run    -- Führt clean, kernel und run hintereinander aus.
 #
 
 
@@ -17,19 +17,22 @@
 #
 LSCRIPT = kernel.lds
 OBJ = start1.o main.o
+LINNERT = /home/mi/linnert/arm/bin
 
-#
+# Library export
+
+export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/
+
 # Konfiguration
 #
-CC = /home/mi/linnert/arm/bin/arm-none-eabi-gcc
-LD = /home/mi/linnert/arm/bin/arm-none-eabi-ld
+CC = $(LINNERT)/arm-none-eabi-gcc
+LD = $(LINNERT)/arm-none-eabi-ld
 OBJCOPY = /home/mi/linnert/arm/bin/arm-none-eabi-objcopy
 
-CFLAGS = -Wall -Wextra -ffreestanding -mcpu=arm920t -O2 -std=c99
+CFLAGS = -Wall -Wextra -ffreestanding -mcpu=arm920t -O2 -std=c11
 #LIBGCC := $(shell $(CC) -print-libgcc-file-name)
 
 DEP = $(OBJ:.o=.d)
-
 #
 # Regeln
 #
@@ -62,3 +65,10 @@ clean:
 	rm -f kernel kernel.bin kernel.img
 	rm -f $(OBJ)
 	rm -f $(DEP)
+
+.PHONY: run
+run:
+	$(LINNERT)/qemu-bsprak -kernel kernel
+
+.PHONY: clean_kernel_run
+clean_kernel_run: clean kernel run
