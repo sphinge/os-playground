@@ -6,6 +6,8 @@
 #
 # make clean	-- Löscht alle erzeugten Dateien.
 #
+# make clean_selected   --Löscht alle dateien, bis auf kernel
+#
 # make run   -- Führt qemu aus.
 #
 # make clean_kernel_run    -- Führt clean, kernel und run hintereinander aus.
@@ -32,6 +34,8 @@ OBJCOPY = /home/mi/linnert/arm/bin/arm-none-eabi-objcopy
 CFLAGS = -Wall -Wextra -ffreestanding -mcpu=arm920t -O2 -std=c11
 #LIBGCC := $(shell $(CC) -print-libgcc-file-name)
 
+OUTPUT_DIR = ..
+
 DEP = $(OBJ:.o=.d)
 #
 # Regeln
@@ -48,7 +52,7 @@ all: kernel
 	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 
 kernel: $(LSCRIPT) $(OBJ)
-	$(LD) -T$(LSCRIPT) -o $@ $(OBJ) $(LIBGCC)
+	$(LD) -T$(LSCRIPT) -o $(OUTPUT_DIR)//$@ $(OBJ) $(LIBGCC)
 
 kernel.bin: kernel
 	$(OBJCOPY) -Obinary --set-section-flags .bss=contents,alloc,load,data $< $@
@@ -62,13 +66,19 @@ install: kernel.img
 
 .PHONY: clean
 clean:
-	rm -f kernel kernel.bin kernel.img
+	rm -f $(OUTPUT_DIR)/kernel kernel.bin kernel.img
+	rm -f $(OBJ)	
+	rm -f $(DEP)
+
+.PHONY: clean_selected
+clean_selected:
+	rm -f kernel.bin kernel.img
 	rm -f $(OBJ)
 	rm -f $(DEP)
 
 .PHONY: run
 run:
-	$(LINNERT)/qemu-bsprak -kernel kernel
+	$(LINNERT)/qemu-bsprak -kernel ../kernel
 
 .PHONY: clean_kernel_run
 clean_kernel_run: clean kernel run

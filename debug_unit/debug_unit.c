@@ -1,7 +1,5 @@
 #include "debug_unit.h"
 
-int sleep(int time);
-
 int activateDBGU(){
    volatile int* cr = (int*) (DBGU + DBGU_CR);
    *cr = (1 << 6) | (1 << 4);
@@ -95,7 +93,6 @@ int printf(char msg[], ...) {
       }
    }
    *thr = '\n';
-   printDBGU("out");
    return 0;
 }
 
@@ -158,29 +155,4 @@ char* int_to_decimal(int num, char* str){
       } 
    }
    return str;
-}
-
-//In Arbeit!
-//Funktional aber time hat keinen exakten zeitwert sondern verzögert einfach
-int sleep(int time)
-{
-   int ST = 0xFFFFFD00;
-   int SR_CRTR = 0x0024;
-   int ST_RTAR = 0x0020;
-   int ST_RTMR = 0x000C;
-
-   volatile int* RTT;
-   volatile int* RTAR;
-   volatile int* RTMR;
-   RTT = ST + SR_CRTR;
-   RTAR = ST + ST_RTAR;
-   RTMR = ST + ST_RTMR;
-
-   
-   int current = (*RTT << 20) >> 20;
-   *RTAR = 0; 
-   *RTMR = 1;
-   while(*RTT < current + time){;}
-
-   return 0;
 }
