@@ -10,15 +10,6 @@ int main() {
    printDBGU(msg);
    printf("String: %c %c Char", 'A', 'C');
    int i = printf("String: %s, Char: %c, Hex: %x, Pointer: %p, Number Positive: %d, Number Positive: %d, end", "String", 'C', 0xABCD1234, msg, 550, -3424);
-   if(i == 0)
-   {
-      //printDBGU("Ende");
-      printBinaryDBGU(55);
-   }
-   else
-   {
-      printBinaryDBGU(55);
-   }
    
    return 0;
 }
