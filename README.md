@@ -13,6 +13,10 @@ in ./make_kernel:
 
  **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
 
+Beenden:
+
+Strg + A und dann X
+
 # Changes:
 - Makefile sollte den Library export jetzt auch machen
 - Modularisierung 
