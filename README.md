@@ -1,7 +1,7 @@
 Übung 1 ist unter dem tag "uebung01" zu finden 
 
 # How to use:
-in ./make_kernel:
+## in ./make_kernel:
 
  **make kernel**	-- Baut den Kernel.
 
@@ -13,7 +13,7 @@ in ./make_kernel:
 
  **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
 
-Beenden:
+## Beenden:
 
 Strg + A und dann X
 
