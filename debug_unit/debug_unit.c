@@ -110,8 +110,9 @@ int printBinaryDBGU(int num){
       }
       else{
          *thr = '1';
-      }  
+      }
    }
+   *thr = '\n';
    return 0;
 }
 
