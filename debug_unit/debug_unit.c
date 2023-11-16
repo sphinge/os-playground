@@ -39,7 +39,7 @@ char receiveCharDBGU() {
 %s => String
 %x => Hex
 %p => pointer
-%d 0> Decimal
+%d => Decimal
 */
 int printf(char msg[], ...) {
    volatile int* thr = (int*) (DBGU + DBGU_THR);
