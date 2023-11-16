@@ -18,7 +18,7 @@
 # Quellen
 #
 LSCRIPT = kernel.lds
-OBJ = start1.o main.o
+OBJ = start1.o main.o 
 LINNERT = /home/mi/linnert/arm/bin
 
 # Library export
