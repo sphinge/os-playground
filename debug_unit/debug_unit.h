@@ -1,3 +1,5 @@
+#ifndef DEBUG_UNIT_H
+#define DEBUG_UNIT_H 
 #define DBGU 0xFFFFF200
 #define DBGU_CR   0x0000
 #define DBGU_MR   0x0004
@@ -20,3 +22,5 @@ int printf(char msg[],...);
 char* uint_to_hex(int i, char* hex);
 int printBinaryDBGU(int num);
 char* int_to_decimal(int num, char* str);
+
+#endif

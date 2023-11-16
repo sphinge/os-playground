@@ -8,3 +8,6 @@ isr:
     LDR pc, DA_ADD
     LDR pc, IRQ_ADD
     LDR pc, FIQ_ADD
+
+RESET:
+    isr_reset()
