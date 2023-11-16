@@ -13,4 +13,4 @@ int isr_da();
 int isr_irq();
 int isr_fiq();
 
-#endif /* _ISR_H_ */
+#endif _ISR_H_

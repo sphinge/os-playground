@@ -11,7 +11,7 @@
 #define FIQ_ADD   0xDB6D8  //Fast Interrupt
 
 
-void *memcpy (void *dest, const void *src, size_t len);
-int memcmp (const void *str1, const void *str2, size_t count);
-void *memmove (void *dest, const void *src, size_t len);
-void *memmove (void *dest, const void *src, size_t len);
+void *memcpy (void *dest, const void *src, unsigned int len);
+int memcmp (const void *str1, const void *str2, unsigned int count);
+void *memmove (void *dest, const void *src, unsigned int len);
+void *memmove (void *dest, const void *src, unsigned int len);
