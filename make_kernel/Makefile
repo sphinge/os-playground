@@ -13,12 +13,14 @@
 # make clean_kernel_run    -- Führt clean, kernel und run hintereinander aus.
 #
 
-
+SRC_ISR = ../ISR/
+SRC_DBGU = ../debug_unit/
+SRC_LIB = ../lib/
 #
 # Quellen
 #
 LSCRIPT = kernel.lds
-OBJ = start1.o main.o 
+OBJ = start1.o main.o $(SRC_ISR)isr.o $(SRC_ISR)ivt.o $(SRC_DBGU)debug_unit.o $(SRC_LIB)memory.o
 LINNERT = /home/mi/linnert/arm/bin
 
 # Library export
@@ -49,6 +51,12 @@ all: kernel
 	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 
 %.o: %.c
+	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
+
+$(SRC_ISR)/%.o: $(SRC_ISR)/%.S
+	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
+
+$(SRC_ISR)/%.o: $(SRC_ISR)/%.c
 	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $<
 
 kernel: $(LSCRIPT) $(OBJ)

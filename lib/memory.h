@@ -1,4 +1,6 @@
 //memcpy, memcmp, memmove, memset are from https://github.com/gcc-mirror/gcc/tree/master/libgcc
+#ifndef _MEMORY_H_
+#define _MEMORY_H_
 #define IVT_SIZE  0x1C
 #define ISR_SIZE  0x000FFFFF
 
@@ -12,6 +14,8 @@
 
 
 void *memcpy (void *dest, const void *src, unsigned int len);
-int memcmp (const void *str1, const void *str2, unsigned int count);
-void *memmove (void *dest, const void *src, unsigned int len);
-void *memmove (void *dest, const void *src, unsigned int len);
+//int memcmp (const void *str1, const void *str2, unsigned int count);
+//void *memmove (void *dest, const void *src, unsigned int len);
+//void *memmove (void *dest, const void *src, unsigned int len);
+
+#endif

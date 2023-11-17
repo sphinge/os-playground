@@ -1,13 +1,14 @@
 #include "memory.h"
-
+#include "../debug_unit/debug_unit.h"
 
 //memcpy, memcmp, memmove, memset are from https://github.com/gcc-mirror/gcc/tree/master/libgcc
 
 void *memcpy (void *dest, const void *src, unsigned int len){
     char *d = dest;
     const char *s = src;
-    while (len--)
+    while (len--){
         *d++ = *s++;
+    }
     return dest;
 }
 /*

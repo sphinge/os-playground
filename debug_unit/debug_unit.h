@@ -1,5 +1,5 @@
-#ifndef DEBUG_UNIT_H
-#define DEBUG_UNIT_H 
+#ifndef _DEBUG_UNIT_H_
+#define _DEBUG_UNIT_H_
 #define DBGU 0xFFFFF200
 #define DBGU_CR   0x0000
 #define DBGU_MR   0x0004
