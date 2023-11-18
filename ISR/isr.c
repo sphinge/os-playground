@@ -1,48 +1,33 @@
 #include "isr.h"
 #include "../lib/memory.h"
 #include "../debug_unit/debug_unit.h"
-#include "../time/time.c"
 //#include ""
 
 
-int isr_init(){
-    //int x = add(1,2);s
-    //printf("Result: %d", x);
-    int ivtptr = ivt;
-    printf("Src: %x", ivtptr);
-    //memcopy asm to sram
-    memcpy(0x200000, ivtptr, 1000);
-    printf("memcpy finish");
-    //Remap
-    volatile int* rcr = (int*) MC + MC_RCR;
-    *rcr = 1;
-
-    volatile int* IECR;
-    IECR = AIC + AIC_IECR;
-    volatile int* ISCR;
-    ISCR = AIC + AIC_ISCR;
-    
-    *IECR = 0x7F;
-    //*ISCR = 1;
-    __asm__("SWI #0");
-
-    printf("yay");
-    __asm__("SWI #0");
-    return 0;
+int isr_init(){ 
+    memcpy(0x200000, ivt, 2000);    //memcopy asm to sram                         //TODO: Get actual size of ivt.S !!!!!!
+    volatile int* rcr = (int*) MC + MC_RCR;  //Remap 
+    *rcr = 1;                                //Remap Command Register enable
+    return;
 }
 
 int isr_reset(){
+    volatile int* IVR;
+    IVR = AIC + AIC_IVR;
     printf("reset ISR");
-    sleep(50000);
     return 0;
 }
 
 int isr_ui(){
+    //volatile int* IVR;
+    //IVR = AIC + AIC_IVR;
     printf("ui ISR");
     return 0;
 }
 
 int isr_swi(){
+    //volatile int* IVR;
+    //IVR = AIC + AIC_IVR;
     printf("swi ISR");
     return 0;
 }
@@ -53,6 +38,8 @@ int isr_pa(){
 }
 
 int isr_da(){
+    volatile int* IVR;
+    IVR = AIC + AIC_IVR;
     printf("da ISR");
     return 0;
 }
