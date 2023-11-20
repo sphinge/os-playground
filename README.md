@@ -1,4 +1,5 @@
-Übung 1 ist unter dem tag "uebung01" zu finden \n
+Übung 1 ist unter dem tag "uebung01" zu finden 
+
 Übung 2 ist unter dem tag "uebung02" zu finden 
 
 # How to use:
