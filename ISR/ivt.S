@@ -10,77 +10,90 @@ ivt:
     b FIQ
 
 RESET:
-    LDR r0, =isr_functions
-    LDR pc, [r0]
+    //No saving required = nothing to go back to
+
+    LDR r0, =isr_functions         //Load isr_reset
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_reset
 
 UI:
-    STR #0xFFFFF21C, #70
-    push {r0-r12}
-    LDR r0, =isr_functions
+    STMFD sp!, {r0-r12, lr}
+
+    LDR r0, =isr_functions         //Load isr_ui
     ADD r0, r0, #4
-    LDR pc, [r0]
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_ui
 
-SWI:
-    push {r0-r12}
-    LDR r0, =isr_functions   //Load isr_swi
+    LDMFD sp!, {r0-r12, lr}
+    MOVS pc, lr
+
+SWI:                      //SWI stays in SUPERVISOR because Usermode is not initialized!
+    STMFD sp!, {r0-r12, lr}
+
+    MRS r0, SPSR          //Supervisor Mode set 
+    BIC r0, r0, #0x1F     //Map the last 5 Bits: 11111
+    ORR r0, r0, #0x13     //set them to Supervisor: 10011
+    MSR SPSR, r0
+
+    LDR r0, =isr_functions         //Load isr_swi
     ADD r0, r0, #8
-    LDR pc, [r0]             //start isr_swi
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_swi 
 
-    MRS r0, CPSR
-    BIC r0, r0, #0x0F     //Map the last 4 Bits: 1111
-    ORR r0, r0, #0x10     //set them to usermode: 10000
-    MSR CPSR_c, r0        //save back -> Change Mode      _c -> control field 
-    pop {r0-r12}
-    push {lr}
-
-    MRS r13, CPSR          //change to supervisor mode: 10011
-    BIC r13, r13, #0x0F     
-    ORR r13, r13, #0x13     
-    MSR CPSR_c, r13        
-
-    pop {r13}
-    SUB r13, r13, #4
-    push {r13}
-
-    //MOV r13, #1         //enable Interrupt
-    //LSL r13, r13, #7
-    //ORR r13, CPSR, r13
-    //MSR CPSR, r13   
-
-    MRS r13, CPSR          //change to user mode: 10000
-    BIC r13, r13, #0x0F 
-    ORR r13, r13, #0x10 
-    MSR CPSR_c, r13        
-    pop {pc}              //ret
-
+    LDMFD sp!, {r0-r12, lr}
+    MOVS pc, lr
 
 PA:
-    push {r0-r12}
-    LDR r0, =isr_functions
-    ADD r0, r0, #12
+    STMFD sp!, {r0-r12, lr}
 
-    LDR pc, [r0]
+    LDR r0, =isr_functions         //Load isr_pa
+    ADD r0, r0, #12
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_pa
+
+    LDMFD sp!, {r0-r12, lr}
+    MOVS pc, lr
 
 
 DA:
-    push {r0-r12}
-    LDR r0, =isr_functions
+    STMFD sp!, {r0-r12, lr}
+
+    LDR r0, =isr_functions         //Load isr_da
     ADD r0, r0, #16
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_da
 
-    LDR pc, [r0]
-
+    LDMFD sp!, {r0-r12, lr}
+    SUBS pc, lr, #4
 
 IRQ:
-    push {r0-r12}
-    LDR r0, =isr_functions
+    STMFD sp!, {r0-r12, lr}
+
+    LDR r0, =isr_functions         //Load isr_irq
     ADD r0, r0, #20
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_irq
 
-    LDR pc, [r0]
-
+    LDMFD sp!, {r0-r12, lr}
+    SUBS pc, lr, #4
 
 FIQ:
-    push {r0-r7}
-    LDR r0, =isr_functions
-    ADD r0, r0, #24
+    STMFD sp!, {r0-r7, lr}
 
-    LDR pc, [r0]
+    LDR r0, =isr_functions         //Load isr_fiq
+    ADD r0, r0, #24
+    MOV lr, pc
+    ADD lr, #4
+    LDR pc, [r0]                   //start isr_fiq
+
+    LDMFD sp!, {r0-r7, lr}
+    SUBS pc, lr, #4
+
+
+    

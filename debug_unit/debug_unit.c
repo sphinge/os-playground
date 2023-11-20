@@ -40,6 +40,7 @@ char receiveCharDBGU() {
 %x => Hex
 %p => pointer
 %d => Decimal
+%b => Binary 
 */
 int printf(char msg[], ...) {
    volatile int* thr = (int*) (DBGU + DBGU_THR);
@@ -47,6 +48,7 @@ int printf(char msg[], ...) {
    ap = (int*) &msg + 1;
    char hex[] = "0x00000000";
    char* str = "";
+   int num;
 
    for(int i = 0; msg[i]; i++) {
       if(msg[i] != '%') {
@@ -87,6 +89,21 @@ int printf(char msg[], ...) {
                i++;
                break;
 
+            case 'b':              //Wahrlich optimierbar
+               num = *ap++;
+               for(int i = 0; i < 32; i++) {
+                  int bits = 0x80000000 >> i;
+                  int little = num & bits;
+                  if(little == 0) {
+                     *thr = '0';
+                  }
+                  else {
+                     *thr = '1';
+                  }
+               }
+               i++;
+               break;
+               
             default: 
                *thr = '%';
          }
