@@ -13,8 +13,7 @@ int isr_init(){
         "MRS r0, CPSR\n"
         "BIC r0, r0, #0xC0\n"
         "MSR CPSR_c, r0\n"
-    ); 
-    
+    );
     return 0;
 }
 
@@ -72,4 +71,5 @@ int isr_fiq(){
     return 0;
 }
 
+//list of pointers to ISR-functions for all modes, source: ChatGPT 4
 int (*isr_functions[])() = {isr_reset, isr_ui, isr_swi, isr_pa, isr_da, isr_irq, isr_fiq};

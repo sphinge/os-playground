@@ -9,6 +9,8 @@ ivt:
     b IRQ
     b FIQ
 
+//=isr_functions is a list of pointers to ISR-functions for all modes, source: ChatGPT 4
+
 RESET:
     //No saving required = nothing to go back to
 
