@@ -11,6 +11,10 @@
 
  **make run**   -- Führt qemu aus.
 
+ **make run-debug**   -- Führt qemu aus, wartet auf GDB.
+
+ **make debugger**   -- Führt GDB aus.
+
  **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
 
 ## Beenden:
@@ -18,8 +22,6 @@
 Strg + A und dann X
 
 # Changes:
-- Makefile sollte den Library export jetzt auch machen
-- Modularisierung 
-- printf um %d erweitert (Positiv und Negativ)
-- in DBGU funktionen int_to_decimal und printBinaryDBGU hinzugefügt
+- printf um %b (binary) erweitert 
+- ivt und isr "Handler" hinzugefügt (teils funktional)
 - in Time sleep funktion ist experimentell, funktioniert zwar, aber nicht akkurat an den eingegebenen Zeitwert (Warnings von sleep() ignorieren)
