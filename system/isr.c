@@ -1,6 +1,6 @@
-#include "isr.h"
-#include "../lib/memory.h"
-#include "../debug_unit/debug_unit.h"
+#include <isr.h>
+#include <memory.h>
+#include <debug_unit.h>
 //#include "../time/time.c"
 
 
@@ -17,20 +17,24 @@ int isr_init(){
     return 0;
 }
 
-int mode_init(){
+int mode_init(){ // WICHTIG
     unsigned long modes[] = {0x1F, 0x1B, 0x17, 0x13, 0x12, 0x11, 0x10};
-    unsigned long cpsr;
-    int base_address = 0x200BB8;
-    int space = 4000;
-    int address;
+    //unsigned long cpsr;
+    unsigned long base_address = 0x00200BB8;
+    unsigned long space = 4000;
+    unsigned long address;
     for(int i = 0; i < 7; i++){
-        address = base_address + space*i;
+        address = (unsigned long) (base_address + space*i);
+        printf("%x", address);
         __asm__ volatile (
             "MRS r0, CPSR\n"
             "BIC r0, r0, #0x1F\n"     //Map the last 5 Bits: 11111
             "ORR r0, r0, %0\n"        //set them to corresponding mode
-            "MSR CPSR, r0\n" : : "r" (modes[i]) : "r0"
+            "MSR CPSR, r0\n" : : "r" (modes[i]) : "r0"                          //DIREKT Stack Pointer setzten !!!!
         );
+        // __asm__ volatile(
+        //     "LDR sp, %0\n" : : "r" (address) : "r1" 
+        // );
     }
     return 0;
 }

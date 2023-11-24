@@ -42,10 +42,10 @@ SWI:                      //SWI stays in SUPERVISOR because Usermode is not init
     LDR r0, =isr_functions         //Load isr_swi
     ADD r0, r0, #8
     MOV lr, pc
-    ADD lr, #4
+    ADD lr, #4                     //pipeline -> +8 
     LDR pc, [r0]                   //start isr_swi 
 
-    LDMFD sp!, {r0-r12, lr}
+    LDMFD sp!, {r0-r12, lr}        //Suffix ^ -> Wechsel des Modus statt MOVS 
     MOVS pc, lr
 
 PA:

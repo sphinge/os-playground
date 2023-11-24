@@ -1,6 +1,9 @@
-#include "../debug_unit/debug_unit.h"
+#include <isr.h>
 //printf is in isr.c 
-#include "../ISR/isr.h"
+#include <memory.h>
+#include <debug_unit.h>
+
+
 
 int test_interrupt();
 
@@ -8,13 +11,18 @@ int main() {
 
    activateDBGU();
    char msg[] = "MoinsenOS";
+   //char* msg2;
    printf(msg);
+
+   //msg2 = receiveDBGU();
+
+   //printf(msg2);
 
    isr_init();                  //Initializate the IVT table and handlers 
 
    //mode_init();               //TODO: Set up different stacks for each mode -> no overwrite
 
-   test_interrupt();            //Test interrupts
+   //test_interrupt();            //Test interrupts
    printf("END");
    return 0;
 }

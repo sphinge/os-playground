@@ -11,6 +11,7 @@
 //int add(int a, int b);
 void ivt();
 int isr_init();
+int mode_init();
 extern int isr_reset();
 int isr_ui();
 int isr_swi();

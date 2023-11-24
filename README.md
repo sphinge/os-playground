@@ -3,9 +3,8 @@
 Übung 2 ist unter dem tag "uebung02" zu finden 
 
 # How to use:
-## in ./make_kernel:
 
- **make kernel**	-- Baut den Kernel.
+ **make build**	-- Baut den Kernel.
 
  **make clean**	-- Löscht alle erzeugten Dateien.
 
@@ -17,7 +16,9 @@
 
  **make debugger**   -- Führt GDB aus.
 
- **make clean_kernel_run**    -- Führt clean, kernel und run hintereinander aus.
+ **make clean_build_run**    -- Führt clean, build und run hintereinander aus.
+ **make clean_run**    -- Führt clean, build, clean_selected und run hintereinander aus.    **Empfohlen**
+#
 
 ## Beenden:
 

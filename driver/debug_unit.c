@@ -25,12 +25,11 @@ int printDBGU(char msg[]){
 }
 
 //Vielleicht funktional können es nicht prüfen, weil wir ni cht wissen wie man inputs sendet
-char receiveCharDBGU() {                         
-   volatile char* rhr = (char*) (DBGU + DBGU_RHR);
-   int* check = (int*) (DBGU + DBGU_SR);
-   if(*check & (1)) {
-      return *rhr;
-   }
+char* receiveDBGU() {                         
+   // volatile char* rhr = (char*) (DBGU + DBGU_RHR);
+   // int* check = (int*) (DBGU + DBGU_SR);
+   // while(!(*check & (1))) {}
+   // return rhr;
    return 0;
 }
 

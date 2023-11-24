@@ -17,7 +17,7 @@
 int activateDBGU();
 int deactivateDBGU();
 int printDBGU(char msg[]);
-char receiveCharDBGU();
+char* receiveDBGU();
 int printf(char msg[],...);
 char* uint_to_hex(int i, char* hex);
 int printBinaryDBGU(int num);

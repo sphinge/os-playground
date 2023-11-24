@@ -1,5 +1,5 @@
-#include "memory.h"
-#include "../debug_unit/debug_unit.h"
+#include <memory.h>
+#include <debug_unit.h>
 
 //memcpy, memcmp, memmove, memset are from https://github.com/gcc-mirror/gcc/tree/master/libgcc
 
