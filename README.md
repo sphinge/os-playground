@@ -17,6 +17,7 @@
  **make debugger**   -- Führt GDB aus.
 
  **make clean_build_run**    -- Führt clean, build und run hintereinander aus.
+ 
  **make clean_run**    -- Führt clean, build, clean_selected und run hintereinander aus.    **Empfohlen**
 #
 
