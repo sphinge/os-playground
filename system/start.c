@@ -1,5 +1,4 @@
 #include <isr.h>
-//printf is in isr.c 
 #include <memory.h>
 #include <debug_unit.h>
 
@@ -10,13 +9,12 @@ int test_interrupt();
 int main() {
 
    activateDBGU();
-   char msg[] = "MoinsenOS";
-   //char* msg2;
-   printf(msg);
-
-   //msg2 = receiveDBGU();
-
-   //printf(msg2);
+   char msg1[] = "MoinsenOS";
+   printf(msg1);
+   
+   char msg2[20];
+   receiveDBGU(msg2);
+   printf(msg2);
 
    isr_init();                  //Initializate the IVT table and handlers 
 

@@ -13,11 +13,12 @@
 #define DBGU_CIDR 0x0040
 #define DBGU_EXID 0x0044
 #define HEX "0123456789ABCDEF"
+#define MAX_INPUT 200
 
 int activateDBGU();
 int deactivateDBGU();
 int printDBGU(char msg[]);
-char* receiveDBGU();
+char* receiveDBGU(char* str);
 int printf(char msg[],...);
 char* uint_to_hex(int i, char* hex);
 int printBinaryDBGU(int num);

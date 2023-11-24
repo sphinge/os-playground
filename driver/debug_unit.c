@@ -1,4 +1,5 @@
-#include "debug_unit.h"
+#include <debug_unit.h>
+#include <memory.h>
 
 int activateDBGU(){
    volatile int* cr = (int*) (DBGU + DBGU_CR);
@@ -15,22 +16,32 @@ int deactivateDBGU(){
 //simple output of String
 int printDBGU(char msg[]){
    volatile int* thr = (int*) (DBGU + DBGU_THR);
-
-   *thr = '>';
    for(int i = 0; msg[i]; i++) {
       *thr = msg[i];
    }
-   *thr = '\n';
    return 0;
 }
 
-//Vielleicht funktional können es nicht prüfen, weil wir ni cht wissen wie man inputs sendet
-char* receiveDBGU() {                         
-   // volatile char* rhr = (char*) (DBGU + DBGU_RHR);
-   // int* check = (int*) (DBGU + DBGU_SR);
-   // while(!(*check & (1))) {}
-   // return rhr;
-   return 0;
+//receive String until press Enter
+char* receiveDBGU(char str[]) {                        
+   volatile char* rhr = (char*) (DBGU + DBGU_RHR);
+   int* check = (int*) (DBGU + DBGU_SR); 
+   char input[MAX_INPUT];
+   char enter = 0x0000000D;
+   char act[] = {'x'};
+   int len;
+
+   for(len = 0; act[0] != enter && len< MAX_INPUT; len++) {
+      while(!(*check & (1))) {}
+      input[len] = *rhr;
+      act[0] = input[len];
+      printDBGU(act);
+   }
+   act[0] = '\n';
+
+   printDBGU(act);
+   memcpy (str, input, len);
+   return str;
 }
 
 /* printf:
@@ -106,26 +117,6 @@ int printf(char msg[], ...) {
             default: 
                *thr = '%';
          }
-      }
-   }
-   *thr = '\n';
-   return 0;
-}
-
-
-int printBinaryDBGU(int num){
-   volatile int* thr = (int*) (DBGU + DBGU_THR);
-
-   for(int i = 0; i < 32; i++)
-   {
-      int bits = 0x80000000 >> i;
-      int little = num & bits;
-      if(little == 0)
-      {
-         *thr = '0';
-      }
-      else{
-         *thr = '1';
       }
    }
    *thr = '\n';
