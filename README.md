@@ -26,6 +26,8 @@
 Strg + A und dann X
 
 # Changes:
-- printf um %b (binary) erweitert 
+- receiveDBGU Funktional
+- entfernen von printBinaryDBGU
+- änderung des zwecks von printDBGU weil es durch printf ersetzt wurde
 - ivt und isr "Handler" hinzugefügt (teils funktional)
 - in Time sleep funktion ist experimentell, funktioniert zwar, aber nicht akkurat an den eingegebenen Zeitwert (Warnings von sleep() ignorieren)
