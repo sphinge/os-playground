@@ -23,15 +23,14 @@ int printDBGU(char msg[]){
 }
 
 //receive String until press Enter
-char* receiveDBGU(char str[]) {                        
+char* receiveDBGU(char str[], int max_input) {                        
    volatile char* rhr = (char*) (DBGU + DBGU_RHR);
    int* check = (int*) (DBGU + DBGU_SR); 
-   char input[MAX_INPUT];
-   char enter = 0x0000000D;
+   char input[max_input];
    char act[] = {'x'};
    int len;
 
-   for(len = 0; act[0] != enter && len< MAX_INPUT; len++) {
+   for(len = 0; act[0] != ENTER && len< max_input; len++) {
       while(!(*check & (1))) {}
       input[len] = *rhr;
       act[0] = input[len];

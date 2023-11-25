@@ -13,7 +13,7 @@ int main() {
    printf(msg1);
    
    char msg2[20];
-   receiveDBGU(msg2);
+   receiveDBGU(msg2, 20);
    printf(msg2);
 
    isr_init();                  //Initializate the IVT table and handlers 
