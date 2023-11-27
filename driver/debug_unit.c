@@ -22,8 +22,13 @@ int printDBGU(char msg[]){
    return 0;
 }
 
+char receiveDBGU() //TODO
+{
+   return 'c';
+}
+
 //receive String until press Enter
-char* receiveDBGU(char str[], int max_input) {                        
+int receive_line(char str[], int max_input) {                        
    volatile char* rhr = (char*) (DBGU + DBGU_RHR);
    int* check = (int*) (DBGU + DBGU_SR); 
    char input[max_input];
@@ -40,7 +45,7 @@ char* receiveDBGU(char str[], int max_input) {
 
    printDBGU(act);
    memcpy (str, input, len);
-   return str;
+   return 0;
 }
 
 /* printf:

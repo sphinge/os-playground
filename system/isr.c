@@ -3,9 +3,10 @@
 #include <debug_unit.h>
 //#include "../time/time.c"
 
-
 int isr_init(){ 
-    memcpy((void*)0x200000, ivt, 2000);      //memcopy asm to sram               //TODO: Get actual size of ivt.S !!!!!!
+    int ivt_size = ivt_end-ivt_start;
+
+    memcpy((void*) SRAM_ADDRESS, ivt_start, ivt_size);      //memcopy asm to sram               //TODO: Get actual size of ivt.S !!!!!!
     volatile int* rcr = (int*) MC + MC_RCR;  //Remap 
     *rcr = 1;                                //Remap Command Register enable
     
@@ -14,28 +15,6 @@ int isr_init(){
         "BIC r0, r0, #0xC0\n"
         "MSR CPSR_c, r0\n"
     );
-    return 0;
-}
-
-int mode_init(){ // WICHTIG
-    unsigned long modes[] = {0x1F, 0x1B, 0x17, 0x13, 0x12, 0x11, 0x10};
-    //unsigned long cpsr;
-    unsigned long base_address = 0x00200BB8;
-    unsigned long space = 4000;
-    unsigned long address;
-    for(int i = 0; i < 7; i++){
-        address = (unsigned long) (base_address + space*i);
-        printf("%x", address);
-        __asm__ volatile (
-            "MRS r0, CPSR\n"
-            "BIC r0, r0, #0x1F\n"     //Map the last 5 Bits: 11111
-            "ORR r0, r0, %0\n"        //set them to corresponding mode
-            "MSR CPSR, r0\n" : : "r" (modes[i]) : "r0"                          //DIREKT Stack Pointer setzten !!!!
-        );
-        // __asm__ volatile(
-        //     "LDR sp, %0\n" : : "r" (address) : "r1" 
-        // );
-    }
     return 0;
 }
 

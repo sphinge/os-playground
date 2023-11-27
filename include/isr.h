@@ -7,11 +7,11 @@
 #define AIC_IECR 0x120  //Interrupt Enable Command Register
 #define AIC_IVR 0x100   //Interrupt Vector Register
 #define AIC_ISR 0x108   //Interrupt Status Register
-
+#define SRAM_ADDRESS 0x200000
 //int add(int a, int b);
-void ivt();
+void ivt_start();
+void ivt_end();
 int isr_init();
-int mode_init();
 extern int isr_reset();
 int isr_ui();
 int isr_swi();

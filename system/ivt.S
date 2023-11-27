@@ -1,98 +1,79 @@
 .section .text
-.global ivt
-ivt:
-    b RESET
-    b UI
-    b SWI
-    b PA
-    b DA
-    b IRQ
-    b FIQ
+.global ivt_start
+.global ivt_end
+ivt_start:
+    ldr	pc, jt_reset
+    ldr	pc, jt_undefined_instruction
+    ldr	pc, jt_software_interrupt
+    ldr	pc, jt_prefetch_abort
+    ldr	pc, jt_data_abort
+    ldr	pc, jt_irq
+    ldr	pc, jt_fiq
+    
+jt_reset: .word reset
+jt_undefined_instruction: .word undefined_instruction
+jt_software_interrupt: .word software_interrupt
+jt_prefetch_abort: .word prefetch_abort
+jt_data_abort: .word data_abort
+jt_irq: .word irq
+jt_fiq: .word fiq
 
+ivt_end:
 //=isr_functions is a list of pointers to ISR-functions for all modes, source: ChatGPT 4
 
-RESET:
+reset:
     //No saving required = nothing to go back to
 
     LDR r0, =isr_functions         //Load isr_reset
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_reset
+    
+    bl isr_reset              //start isr_reset
 
-UI:
+undefined_instruction:
     STMFD sp!, {r0-r12, lr}
 
-    LDR r0, =isr_functions         //Load isr_ui
-    ADD r0, r0, #4
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_ui
+    bl isr_ui               //start isr_ui
 
-    LDMFD sp!, {r0-r12, lr}
-    MOVS pc, lr
+    LDMFD sp!, {r0-r12, pc}^
 
-SWI:                      //SWI stays in SUPERVISOR because Usermode is not initialized!
+software_interrupt:                      //SWI stays in SUPERVISOR because Usermode is not initialized!
     STMFD sp!, {r0-r12, lr}
 
     MRS r0, SPSR          //Supervisor Mode set 
     BIC r0, r0, #0x1F     //Map the last 5 Bits: 11111
     ORR r0, r0, #0x13     //set them to Supervisor: 10011
     MSR SPSR, r0
+    
+    bl isr_swi                 //start isr_swi 
 
-    LDR r0, =isr_functions         //Load isr_swi
-    ADD r0, r0, #8
-    MOV lr, pc
-    ADD lr, #4                     //pipeline -> +8 
-    LDR pc, [r0]                   //start isr_swi 
+    LDMFD sp!, {r0-r12, pc}^        //Suffix ^ -> Wechsel des Modus statt MOVS 
 
-    LDMFD sp!, {r0-r12, lr}        //Suffix ^ -> Wechsel des Modus statt MOVS 
-    MOVS pc, lr
-
-PA:
+prefetch_abort:
     STMFD sp!, {r0-r12, lr}
 
-    LDR r0, =isr_functions         //Load isr_pa
-    ADD r0, r0, #12
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_pa
+    bl isr_pa                  //start isr_pa
 
-    LDMFD sp!, {r0-r12, lr}
-    MOVS pc, lr
+    LDMFD sp!, {r0-r12, pc}^
 
-
-DA:
+data_abort:
     STMFD sp!, {r0-r12, lr}
 
-    LDR r0, =isr_functions         //Load isr_da
-    ADD r0, r0, #16
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_da
+    bl isr_da     //start isr_da
 
     LDMFD sp!, {r0-r12, lr}
     SUBS pc, lr, #4
 
-IRQ:
+irq:
     STMFD sp!, {r0-r12, lr}
 
-    LDR r0, =isr_functions         //Load isr_irq
-    ADD r0, r0, #20
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_irq
+    bl isr_irq                   //start isr_irq
 
     LDMFD sp!, {r0-r12, lr}
     SUBS pc, lr, #4
 
-FIQ:
+fiq:
     STMFD sp!, {r0-r7, lr}
 
-    LDR r0, =isr_functions         //Load isr_fiq
-    ADD r0, r0, #24
-    MOV lr, pc
-    ADD lr, #4
-    LDR pc, [r0]                   //start isr_fiq
+    bl isr_irq                  //start isr_fiq
 
     LDMFD sp!, {r0-r7, lr}
     SUBS pc, lr, #4

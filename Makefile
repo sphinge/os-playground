@@ -30,8 +30,10 @@ LINNERT = /home/mi/linnert/arm/bin
 LSCRIPT = kernel.lds
 OBJ = $(SRC_SYSTEM)entry.o $(SRC_SYSTEM)start.o 
 OBJ += $(SRC_SYSTEM)isr.o $(SRC_SYSTEM)ivt.o 
+OBJ += $(SRC_SYSTEM)stack.o
 OBJ += $(SRC_DRIVER)debug_unit.o #$(SRC_DRIVER)time.o
 OBJ += $(SRC_LIB)memory.o
+OBJ += $(SRC_LIB)debug.o
 
 # Library export
 export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/
@@ -56,11 +58,10 @@ build: kernel
 -include $(DEP)
 
 %.o: %.S
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $< 
 
-%.o: %.c                                          #-save-temps
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<    
-
+%.o: %.c                                          #
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<    -save-temps
 kernel: $(LSCRIPT) $(OBJ)
 	$(LD) -T$(LSCRIPT) -o $@ $(OBJ) $(LIBGCC)
 
@@ -90,7 +91,7 @@ clean_selected:
 run: kernel
 	$(LINNERT)/qemu-bsprak -kernel kernel
 
-run-debug: kernel
+run-debug: kernel #clean_selected 
 	$(LINNERT)/qemu-bsprak -S -s -kernel kernel
 
 debugger: kernel
