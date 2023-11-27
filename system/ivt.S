@@ -9,7 +9,7 @@ ivt_start:
     ldr	pc, jt_data_abort
     ldr	pc, jt_irq
     ldr	pc, jt_fiq
-    
+
 jt_reset: .word reset
 jt_undefined_instruction: .word undefined_instruction
 jt_software_interrupt: .word software_interrupt
@@ -58,7 +58,7 @@ data_abort:
     STMFD sp!, {r0-r12, lr}
 
     bl isr_da     //start isr_da
-
+    
     LDMFD sp!, {r0-r12, lr}
     SUBS pc, lr, #4
 

@@ -54,5 +54,19 @@ int isr_fiq(){
     return 0;
 }
 
-//list of pointers to ISR-functions for all modes, source: ChatGPT 4
-int (*isr_functions[])() = {isr_reset, isr_ui, isr_swi, isr_pa, isr_da, isr_irq, isr_fiq};
+int test_interrupt(){
+
+   printf("DA interupt Test:");       //Trigger the DA interrupt             
+   *(int *)0xa0000000 = 0;      
+   printf("DA interupt Test END");
+
+   printf("SWI interupt Test:");      //Trigger the SWI interrupt
+   __asm__("SWI #0");
+   printf("SWI interupt Test END");
+
+   printf("UI interupt Test:");       //Trigger the UDF interrupt
+   __asm__ ("UDF");  
+   printf("UI interupt Test END");          
+
+   return 0;
+}

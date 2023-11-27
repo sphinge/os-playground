@@ -19,4 +19,5 @@ int isr_pa();
 int isr_da();
 int isr_irq();
 int isr_fiq();
+int test_interrupt();
 #endif /* _ISR_H_ */
