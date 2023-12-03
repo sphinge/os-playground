@@ -31,6 +31,7 @@ LSCRIPT = kernel.lds
 OBJ = $(SRC_SYSTEM)entry.o $(SRC_SYSTEM)start.o 
 OBJ += $(SRC_SYSTEM)isr.o $(SRC_SYSTEM)ivt.o 
 OBJ += $(SRC_SYSTEM)stack.o
+OBJ += $(SRC_SYSTEM)cpu.o
 OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o
 OBJ += $(SRC_LIB)memory.o
 OBJ += $(SRC_LIB)debug.o

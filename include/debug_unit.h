@@ -22,7 +22,6 @@ char receiveDBGU();
 int receive_line(char str[], int max_input);
 int printf(char msg[],...);
 char* uint_to_hex(int i, char* hex);
-int printBinaryDBGU(int num);
 char* int_to_decimal(int num, char* str);
 
 #endif

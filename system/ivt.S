@@ -18,7 +18,6 @@ jt_undefined_instruction: .word undefined_instruction
 jt_software_interrupt: .word software_interrupt
 jt_prefetch_abort: .word prefetch_abort
 jt_data_abort: .word data_abort
-jt_irq: .word irq
 jt_fiq: .word fiq
 
 ivt_end:
@@ -55,19 +54,8 @@ fiq:
     LDMFD sp!, {r0-r7, lr}
     SUBS pc, lr, #4
 
-irq:
-    STMFD sp!, {r0-r12, lr}
-    bl isr_irq     //start isr_da
-    LDMFD sp!, {r0-r12, lr}
-    SUBS pc, lr, #8
-
 s1_irq:
-    //STMFD sp!, {r0-r12, lr}
-    //bl s1_handler     //start isr_da
-    //LDMFD sp!, {r0-r12, lr}
-    //SUBS pc, lr, #8
-    SUB lr, lr, #8
     STMFD sp!, {r0-r12, lr}
-    bl s1_handler                  //start isr_pa
-    LDMFD sp!, {r0-r12, pc}^
-
+    bl s1_handler     //start isr_da
+    LDMFD sp!, {r0-r12, lr}
+    SUBS pc, lr, #4

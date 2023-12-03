@@ -1,5 +1,5 @@
 #include <time.h>
-#include <isr.h>
+#include <system.h>
 #include <debug_unit.h>
 
 int init_PIT(){
@@ -11,11 +11,24 @@ int init_PIT(){
 
    *svr1 = (volatile int) s1_irq;   //SET UP THE HANDLER FUNCTION
    *iecr = (1 << 1);                    //ENABLE INTERRUPT IN AIC
-   *smr1 = *smr1 | (0b111);             //SET PRIO OF SMR
+   *smr1 = 0;             //SET PRIO OF SMR
    *st_ier = 1;                         //ENABLE INTERRUPT IN SR
    *pimr = 0x9000;                   //SET ST TIME
    return 0;
 }
+
+int st_handler(){
+    volatile int* eoicr = (int*) (AIC + AIC_EOICR);
+    volatile int* sr = (int*) (ST + ST_SR);
+
+    int x = *sr;
+    if(x & 1){
+        printf("!");
+    }
+    *eoicr = 1;
+    return 0;
+}
+
 
 //In Arbeit!
 //Funktional aber time hat keinen exakten zeitwert sondern verzögert einfach
@@ -27,7 +40,6 @@ int init_PIT(){
 //    RTT = ST + SR_CRTR;
 //    RTAR = ST + ST_RTAR;
 //    RTMR = ST + ST_RTMR;
-
    
 //    int current = (*RTT << 20) >> 20;
 //    *RTAR = 0; 
