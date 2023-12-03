@@ -45,26 +45,31 @@ int isr_fiq(){
 }
 
 int s1_handler(){
-    st_handler();
+    volatile int* st_sr = (int*) (ST + ST_SR);
+    volatile int* dbgu_sr = (int*) (DBGU + DBGU_SR);
+    volatile int* eoicr = (int*) (AIC + AIC_EOICR);
+
+    if(*st_sr & 1){st_handler();}
+    if(*dbgu_sr & 1){dbgu_handler();}
+
+    *eoicr = 1;
     return 0;
 }
 
-
 int test_interrupt(){
+    printf("DA interupt Test:");       //Trigger the DA interrupt
+    *(int *)0xa0000000 = 0;
+    printf("DA interupt Test END");
 
-   printf("DA interupt Test:");       //Trigger the DA interrupt             
-   *(int *)0xa0000000 = 0;      
-   printf("DA interupt Test END");
+    printf("SWI interupt Test:");      //Trigger the SWI interrupt
+    __asm__("SWI #0");
+    printf("SWI interupt Test END");
 
-   printf("SWI interupt Test:");      //Trigger the SWI interrupt
-   __asm__("SWI #0");
-   printf("SWI interupt Test END");
+    printf("UI interupt Test:");       //Trigger the UDF interrupt
+    __asm__ ("UDF");
+    printf("UI interupt Test END");
 
-   printf("UI interupt Test:");       //Trigger the UDF interrupt
-   __asm__ ("UDF");  
-   printf("UI interupt Test END");          
-
-   return 0;
+    return 0;
 }
 
 //    __asm__ ("mrs %[result], cpsr" : [result]"=r"(cpsr));

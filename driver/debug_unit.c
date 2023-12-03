@@ -1,6 +1,23 @@
 #include <debug_unit.h>
 #include <memory.h>
 
+int init_DBGU_Interrupt(){    //TODO Ring Buffer implementation
+    volatile char* ier = (char*) (DBGU + DBGU_IER);
+
+
+    *ier = 1;
+
+    return 0;
+}
+
+int dbgu_handler(){
+    volatile char* rhr = (char*) (DBGU + DBGU_RHR);
+
+    char c = *rhr;
+    printf("%c", c);
+    return 0;
+}
+
 int activateDBGU(){
    volatile int* cr = (int*) (DBGU + DBGU_CR);
    *cr = (1 << 6) | (1 << 4);

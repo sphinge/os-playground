@@ -18,14 +18,7 @@ int init_PIT(){
 }
 
 int st_handler(){
-    volatile int* eoicr = (int*) (AIC + AIC_EOICR);
-    volatile int* sr = (int*) (ST + ST_SR);
-
-    int x = *sr;
-    if(x & 1){
-        printf("!");
-    }
-    *eoicr = 1;
+    printf("!");
     return 0;
 }
 

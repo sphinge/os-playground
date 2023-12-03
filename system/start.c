@@ -12,16 +12,17 @@ int main() {
     isr_init();                  //Initializate the IVT table and handlers
     //test_interrupt();
     init_PIT();
-
     enable_interrupts();
+
+    init_DBGU_Interrupt();
 
     printf("loop start");
     int x = 0;
 
     while(1){
-        for(int i = 0; i < 214748362; i++){}        //Sleep
-        printf("loop");
-        x++;
+//        for(int i = 0; i < 214748362; i++){}        //Sleep
+//        printf("loop");
+//        x++;
     }
 
     printf("END");
