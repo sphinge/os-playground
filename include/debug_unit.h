@@ -14,19 +14,13 @@
 #define DBGU_EXID 0x0044
 
 #define BUFFER_SIZE 20         //Ring Buffer
-#define HEX "0123456789ABCDEF"
-#define ENTER 0x0000000D
 
 int init_DBGU_Interrupt();
 int dbgu_handler();
-int activateDBGU();
-void printC(char c);
-int deactivateDBGU();
-int printDBGU(char msg[]);
-char receiveDBGU();
-int receive_line(char str[], int max_input);
-int printf(char msg[],...);
-char* uint_to_hex(int i, char* hex);
-char* int_to_decimal(int num, char* str);
+int enable_DBGU();
+int disable_DBGU();
+void print_DBGU(char c);
+char receive_DBGU();
+void reset_Buffer_DBGU();
 
 #endif

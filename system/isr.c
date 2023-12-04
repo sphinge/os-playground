@@ -1,15 +1,14 @@
 #include <system.h>
 #include <memory.h>
 #include <debug_unit.h>
+#include <usrIO.h>
 #include <time.h>
 
-int isr_init(){ 
+int init_ISR(){
     int ivt_size = ivt_end-ivt_start;
-
     memcpy((void*) SRAM_ADDRESS, ivt_start, ivt_size);      //memcopy asm to sram
     volatile int* rcr = (int*) MC + MC_RCR;  //Remap 
     *rcr = 1;                                //Remap Command Register enable
-
     return 0;
 }
 
@@ -71,6 +70,3 @@ int test_interrupt(){
 
     return 0;
 }
-
-//    __asm__ ("mrs %[result], cpsr" : [result]"=r"(cpsr));
-//    printf("CPSR: %b", cpsr);

@@ -7,8 +7,8 @@
 // SYSTEM_MODE      0b11111
 
 .section .text
-.global stack_init
-stack_init:
+.global init_stack
+init_stack:
     STMFD sp!, {r0-r12, lr}
     
     MRS r0, CPSR

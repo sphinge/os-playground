@@ -1,6 +1,6 @@
 #include <util.h>
 #include <memory.h>
-#include <debug_unit.h>
+#include <usrIO.h>
 
 ///https://stackoverflow.com/questions/827691/how-do-you-implement-a-circular-buffer-in-c
 ///(Modified)
@@ -41,4 +41,46 @@ int cb_pop_front(circular_buffer *cb, void *item){
         cb->tail = cb->buffer;
     cb->count--;
     return 0;
+}
+
+char* uint_to_hex(int num, char* hex){
+    for(int i = 0; i < 8; i++){
+        int current = (15) & (num >> (4*i));
+        hex[9-i] = HEX[current];
+    }
+    return hex;
+}
+
+char* int_to_decimal(int num, char* str){
+    int count = 0;
+    int r = 0;
+    int v = 0;
+    char str_num[11];       // maximal darstellbare größe einer Zahl
+
+    if(num < 0){
+        num = -num;
+        v = 1;
+    }
+
+    if(num == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return str;
+    }
+    else {
+        while(num != 0) {
+            r = num % 10;
+            num = num / 10;
+            str_num[9-count] = r + 48;
+            count++;
+        }
+        if(v == 1){
+            str[0] = '-';
+        }
+        str[count+v] = '\0';
+        for(int i = 0; i < count; i++){
+            str[count+v-1-i] = str_num[9-i];
+        }
+    }
+    return str;
 }

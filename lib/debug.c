@@ -1,3 +1,3 @@
 #include <debug.h>
 
-void breakpoint(){}
+void bkpt(){}

@@ -19,7 +19,7 @@
 void ivt_start();
 void ivt_end();
 void s1_irq();
-int isr_init();
+int init_ISR();
 extern int isr_reset();
 int isr_ui();
 int isr_swi();
