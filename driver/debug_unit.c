@@ -1,20 +1,31 @@
 #include <debug_unit.h>
 #include <memory.h>
 
-int init_DBGU_Interrupt(){    //TODO Ring Buffer implementation
+char buffer[BUFFER_SIZE];
+char* head;
+char* tail;
+
+int init_DBGU_Interrupt(){
     volatile char* ier = (char*) (DBGU + DBGU_IER);
-
-
     *ier = 1;
-
+    head = buffer;
+    tail = buffer;
     return 0;
 }
 
 int dbgu_handler(){
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
-
-    char c = *rhr;
-    printf("%c", c);
+    head++;
+    if(head >= buffer + BUFFER_SIZE){
+        head = buffer;
+    }
+    *head = *rhr;
+    if(head == tail){
+        tail++;
+        if(tail >= buffer + BUFFER_SIZE){
+            tail = buffer;
+        }
+    }
     return 0;
 }
 
@@ -39,9 +50,18 @@ int printDBGU(char msg[]){
    return 0;
 }
 
-char receiveDBGU() //TODO
-{
-   return 'c';
+void printC(char c){
+    volatile int* thr = (int*) (DBGU + DBGU_THR);
+    *thr = c;
+}
+
+char receiveDBGU(){
+    while (head == tail){}
+    tail ++;
+    if(tail >= buffer + BUFFER_SIZE){
+        tail = buffer;
+    }
+    return *tail;
 }
 
 //receive String until press Enter
@@ -71,7 +91,8 @@ int receive_line(char str[], int max_input) {
 %x => Hex
 %p => pointer
 %d => Decimal
-%b => Binary 
+%b => Binary
+%m => String Buffer >>*buff, len<<
 */
 int printf(char msg[], ...) {
    volatile int* thr = (int*) (DBGU + DBGU_THR);
@@ -134,7 +155,16 @@ int printf(char msg[], ...) {
                }
                i++;
                break;
-               
+
+             case 'm':
+                 str = (char*) *ap++;
+                 num = (int) *ap++;
+                 for(int i = 0; i<num; i++) {
+                     *thr = str[i];
+                 }
+                 i++;
+                 break;
+
             default: 
                *thr = '%';
          }

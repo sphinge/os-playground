@@ -9,9 +9,9 @@ int init_PIT(){
    volatile int* smr1 = (int*) (AIC + AIC_SMR1);
    volatile int* st_ier = (int*) (ST + ST_IER);
 
-   *svr1 = (volatile int) s1_irq;   //SET UP THE HANDLER FUNCTION
+   *svr1 = (volatile int) s1_irq;   //SET UP THE HANDLER FUNCTION      //TODO: change pos of AIC init
    *iecr = (1 << 1);                    //ENABLE INTERRUPT IN AIC
-   *smr1 = 0;             //SET PRIO OF SMR
+   *smr1 = 0;                       //SET PRIO OF SMR Level Sensitive
    *st_ier = 1;                         //ENABLE INTERRUPT IN SR
    *pimr = 0x9000;                   //SET ST TIME
    return 0;

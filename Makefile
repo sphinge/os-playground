@@ -35,6 +35,7 @@ OBJ += $(SRC_SYSTEM)cpu.o
 OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o
 OBJ += $(SRC_LIB)memory.o
 OBJ += $(SRC_LIB)debug.o
+OBJ += $(SRC_LIB)util.o
 
 # Library export
 export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/

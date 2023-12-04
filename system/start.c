@@ -2,6 +2,10 @@
 #include <debug_unit.h>
 #include <stack.h>
 #include <time.h>
+#include <util.h>
+#include <debug.h>
+
+void application();
 
 int main() {
     stack_init();
@@ -10,23 +14,22 @@ int main() {
     printf(msg1);
 
     isr_init();                  //Initializate the IVT table and handlers
-    //test_interrupt();
     init_PIT();
+    init_DBGU_Interrupt((char *) 0x2A0000);
     enable_interrupts();
 
-    init_DBGU_Interrupt();
+    application();
+}
 
-    printf("loop start");
-    int x = 0;
-
-    while(1){
-//        for(int i = 0; i < 214748362; i++){}        //Sleep
-//        printf("loop");
-//        x++;
+void application(){
+    char c;
+    while (1){
+        c = receiveDBGU();
+        for(int i = 0; i < 30; i++) {
+            printC(c);
+            for (int i = 0; i < 21454836; i++) {}   //Sleep
+        }
     }
-
-    printf("END");
-    return 0;
 }
 
     // unsigned int spsr;
