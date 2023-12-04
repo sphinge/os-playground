@@ -2,6 +2,8 @@
 
 Übung 2 ist unter dem tag "uebung02" zu finden 
 
+Übung 3 ist unter dem tag "uebung03" zu finden 
+
 # How to use:
 
  **make build**	-- Baut den Kernel.
