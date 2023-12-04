@@ -20,7 +20,7 @@
 
  **make clean_build_run**    -- Führt clean, build und run hintereinander aus.
  
- __**make clean_run**__    -- Führt clean, build, clean_selected und run hintereinander aus.    **>>Empfohlen<<**
+ __make clean_run__    -- Führt clean, build, clean_selected und run hintereinander aus.    **>>Empfohlen<<**
 #
 
 ## Beenden:
