@@ -12,9 +12,6 @@ int main() {
     enable_DBGU();
     char msg1[] = "MoinsenOS";
     printf(msg1);
-    receive_line(msg1, 20);
-
-    printf(msg1);
 
     init_ISR();
     init_AIC();
