@@ -32,11 +32,9 @@ OBJ = $(SRC_SYSTEM)entry.o $(SRC_SYSTEM)start.o
 OBJ += $(SRC_SYSTEM)isr.o $(SRC_SYSTEM)ivt.o 
 OBJ += $(SRC_SYSTEM)stack.o
 OBJ += $(SRC_SYSTEM)cpu.o
-OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o
-OBJ += $(SRC_LIB)memory.o
+OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o $(SRC_DRIVER)aic.o
+OBJ += $(SRC_LIB)memory.o $(SRC_LIB)util.o $(SRC_LIB)print.o $(SRC_LIB)receive.o
 OBJ += $(SRC_LIB)debug.o
-OBJ += $(SRC_LIB)util.o
-OBJ += $(SRC_LIB)print.o $(SRC_LIB)receive.o
 
 # Library export
 export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/

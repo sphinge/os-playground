@@ -3,6 +3,7 @@
 #include <debug_unit.h>
 #include <usrIO.h>
 #include <time.h>
+#include <aic.h>
 
 int init_ISR(){
     int ivt_size = ivt_end-ivt_start;

@@ -4,15 +4,7 @@ char buffer[BUFFER_SIZE];
 char* head;
 char* tail;
 
-int init_DBGU_Interrupt(){
-    volatile char* ier = (char*) (DBGU + DBGU_IER);
-    *ier = 1;
-    head = buffer;
-    tail = buffer;
-    return 0;
-}
-
-int dbgu_handler(){
+int dbgu_handler(){                                    //uses ring buffer to save new input
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
     head++;
     if(head >= buffer + BUFFER_SIZE){
@@ -25,6 +17,14 @@ int dbgu_handler(){
             tail = buffer;
         }
     }
+    return 0;
+}
+
+int init_DBGU_Interrupt(){
+    volatile char* ier = (char*) (DBGU + DBGU_IER);
+    *ier = 1;
+    head = buffer;        //init buffer
+    tail = buffer;
     return 0;
 }
 
@@ -46,7 +46,7 @@ void print_DBGU(char c){
     *thr = c;
 }
 
-char receive_DBGU(){
+char receive_DBGU(){           //get first not read element from buffer
     while (head == tail){}
     tail ++;
     if(tail >= buffer + BUFFER_SIZE){
