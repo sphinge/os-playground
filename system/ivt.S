@@ -55,7 +55,25 @@ fiq:
     SUBS pc, lr, #4
 
 s1_irq:
-    STMFD sp!, {r0-r12, lr}
-    bl s1_handler     //start isr_da
+    STMFD sp!, {r0-r12, lr}   //save context
+    bl bkpt
+    bl change_SYSTEM  //save back sp, lr
+    MOV r0, sp
+    MOV r1, lr
+    bl change_IRQ
+
+    MRS r2, SPSR
+    STMFD sp!, {r0-r2}
+
+    MOV r0, sp
+    BL s1_handler     //start handler
+
+    LDMFD sp!, {r0-r2}
+    MSR SPSR, r2
+    bl change_SYSTEM  //save back sp, lr
+    MOV sp, r0
+    MOV lr, r1
+    bl change_IRQ
+
     LDMFD sp!, {r0-r12, lr}
     SUBS pc, lr, #4

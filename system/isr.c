@@ -44,12 +44,12 @@ int isr_fiq(){
     return 0;
 }
 
-int s1_handler(){
+int s1_handler(int* regs_address){
     volatile int* st_sr = (int*) (ST + ST_SR);
     volatile int* dbgu_sr = (int*) (DBGU + DBGU_SR);
     volatile int* eoicr = (int*) (AIC + AIC_EOICR);
 
-    if(*st_sr & 1){st_handler();}
+    if(*st_sr & 1){st_handler(regs_address);}
     if(*dbgu_sr & 1){dbgu_handler();}
 
     *eoicr = 1;

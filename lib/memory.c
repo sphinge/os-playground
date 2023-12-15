@@ -9,7 +9,7 @@ void *memcpy (void *dest, const void *src, unsigned int len){
     }
     return dest;
 }
-/*
+
 int memcmp (const void *str1, const void *str2, unsigned int count){
     const unsigned char *s1 = str1;
     const unsigned char *s2 = str2;
@@ -43,4 +43,3 @@ void *memset (void *dest, int val, unsigned int len){
         *ptr++ = val;
     return dest;
 }
-*/

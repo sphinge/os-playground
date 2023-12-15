@@ -5,7 +5,8 @@
 #include <time.h>
 #include <aic.h>
 
-void application();
+void thread1();
+void thread2();
 
 int main() {
     init_stack();
@@ -17,19 +18,28 @@ int main() {
     init_AIC();
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
+    init_tcb((int *) 0x23050000,20);
     enable_interrupts();
+    create_t(thread1);
+    while (1){
+        printf("ff");
+        for (int i = 0; i < 214748364; ++i) {}
+    }
 
-    application();
     return 0;
 }
 
-void application(){
-    char c;
+void thread1(){
     while (1){
-        c = receive_DBGU();
-        for(int i = 0; i < 30; i++) {
-            print_DBGU(c);
-            for (int i = 0; i < 21454836; i++) {}   //Sleep
-        }
+        printf("T1");
+        for (int i = 0; i < 214748364; ++i) {}
     }
 }
+
+void thread2(){
+    while (1){
+        printf("T2");
+        for (int i = 0; i < 214748364; ++i) {}
+    }
+}
+

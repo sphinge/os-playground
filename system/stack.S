@@ -8,7 +8,7 @@
 
 .section .text
 .global init_stack
-init_stack:
+init_stack:                      //TODO implement mode change methods
     STMFD sp!, {r0-r12, lr}
     
     MRS r0, CPSR
@@ -46,4 +46,4 @@ init_stack:
     ORR r0, r0, #0b10011 //set to SUPERVISOR_MODE 
     MSR CPSR, r0
 
-    LDMFD sp!, {r0-r12, pc}^   
+    LDMFD sp!, {r0-r12, pc}^

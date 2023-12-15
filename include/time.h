@@ -7,7 +7,7 @@
 #define ST_IER 0x14
 
 int init_PIT();
-int st_handler();
+int st_handler(int* regs_address);
 //int sleep(int time);
 
 #endif

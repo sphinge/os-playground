@@ -1,5 +1,5 @@
 #include <time.h>
-//#include <system.h>
+#include <system.h>
 #include <usrIO.h>
 
 int init_PIT(){
@@ -11,8 +11,13 @@ int init_PIT(){
    return 0;
 }
 
-int st_handler(){
+int st_handler(int* regs_address){       //TODO vielleicht handler pos ändern
     printf("!");
+
+    int x = scheduler(regs_address);
+
+    printf("%d", x);
+
     return 0;
 }
 

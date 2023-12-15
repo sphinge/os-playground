@@ -4,7 +4,7 @@ char buffer[BUFFER_SIZE];
 char* head;
 char* tail;
 
-int dbgu_handler(){                                    //uses ring buffer to save new input
+int dbgu_handler(){  //uses ring buffer to save new input
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
     head++;
     if(head >= buffer + BUFFER_SIZE){
