@@ -1,8 +1,18 @@
 #include <debug_unit.h>
+#include <system.h>
+#include <usrIO.h>
 
 char buffer[BUFFER_SIZE];
 char* head;
 char* tail;
+
+void repeater(char c){                //TODO test function
+    for (int i = 0; i < 10; ++i) {
+        printf("%c", c);
+        for (int i = 0; i < 214748364; ++i) {}
+    }
+    kill_t();
+}
 
 int dbgu_handler(){  //uses ring buffer to save new input
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
@@ -17,6 +27,9 @@ int dbgu_handler(){  //uses ring buffer to save new input
             tail = buffer;
         }
     }
+
+    create_t(repeater, 1, *head);         //TODO test function
+
     return 0;
 }
 

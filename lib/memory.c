@@ -10,6 +10,15 @@ void *memcpy (void *dest, const void *src, unsigned int len){
     return dest;
 }
 
+void *stack_memcpy (void *stack_dest, const void *src, unsigned int len){
+    char *d = stack_dest;
+    const char *s = src;
+    while (len--){
+        *d-- = *s++;
+    }
+    return stack_dest;
+}
+
 int memcmp (const void *str1, const void *str2, unsigned int count){
     const unsigned char *s1 = str1;
     const unsigned char *s2 = str2;

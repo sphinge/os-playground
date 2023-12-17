@@ -29,30 +29,33 @@ typedef enum{
     TASK_READY,
     TASK_RUNNING,
     TASK_WAITING,
-    TASK_TERMINATED
+    TASK_TERMINATED,
+    TASK_IDLE
 } State;
 
 struct TCB {
     int id;
-    int regs[REGISTER_NUM];    //TOP OF STACK -> BOTTOM: CPSR, LR, SP, PC, R12-R0
+    int regs[REGISTER_NUM];    //TOP OF STACK -> BOTTOM: SP, LR, CPSR, PC, R0-R12
     State status;
 };
 
 struct TCB* TCB_array;
 int TCB_size;
 
-int create_t(int* start_t);
-int kill_t();
+int create_idle();
+int create_t(int* start_t, int arg_num, ...);   //TODO pls not here (new file)
+void kill_t();
 
 int init_tcb(void* address, int size);
-int tcb_insert(int start_t);
+int save_context(int tcb_thread, int* regs_address);
+int tcb_insert(int start_t,int arg_num, int* args);
 int tcb_remove();
-int* save_TCB();
 int run_thread(int tcb_thread, int* regs_address);
+void idle();
 
 //SCHEDULER.C
 int scheduler(int* regs_address);
-void pause_thread(int tcb_thread, int* regs_address);
+int pause_thread(int tcb_thread, int* regs_address);
 
 //CPU.S
 void enable_interrupts();

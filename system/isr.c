@@ -14,33 +14,33 @@ int init_ISR(){
 }
 
 int isr_reset(){
-    printf(">RESET ISR<");
+    printfn(">RESET ISR<");
     //sleep(20000);
     return 0;
 }
 
 int isr_ui(){
-    printf(">UI ISR<");
+    printfn(">UI ISR<");
     return 0;
 }
 
 int isr_swi(){
-    printf(">SWI ISR<");
+    printfn(">SWI ISR<");
     return 0;
 }
 
 int isr_pa(){
-    printf(">PA ISR<");
+    printfn(">PA ISR<");
     return 0;
 }
 
 int isr_da(){
-    printf(">DA ISR<");
+    printfn(">DA ISR<");
     return 0;
 }
 
 int isr_fiq(){
-    printf(">FIQ ISR<");
+    printfn(">FIQ ISR<");
     return 0;
 }
 
@@ -57,17 +57,17 @@ int s1_handler(int* regs_address){
 }
 
 int test_interrupt(){
-    printf("DA interupt Test:");       //Trigger the DA interrupt
+    printfn("DA interupt Test:");       //Trigger the DA interrupt
     *(int *)0xa0000000 = 0;
-    printf("DA interupt Test END");
+    printfn("DA interupt Test END");
 
-    printf("SWI interupt Test:");      //Trigger the SWI interrupt
+    printfn("SWI interupt Test:");      //Trigger the SWI interrupt
     __asm__("SWI #0");
-    printf("SWI interupt Test END");
+    printfn("SWI interupt Test END");
 
-    printf("UI interupt Test:");       //Trigger the UDF interrupt
+    printfn("UI interupt Test:");       //Trigger the UDF interrupt
     __asm__ ("UDF");
-    printf("UI interupt Test END");
+    printfn("UI interupt Test END");
 
     return 0;
 }

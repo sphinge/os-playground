@@ -3,6 +3,7 @@
 #define _MEMORY_H_
 
 void *memcpy (void *dest, const void *src, unsigned int len);
+void *stack_memcpy (void *stack_dest, const void *src, unsigned int len);
 int memcmp (const void *str1, const void *str2, unsigned int count);
 void *memmove (void *dest, const void *src, unsigned int len);
 void *memset (void *dest, int val, unsigned int len);

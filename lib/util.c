@@ -6,7 +6,7 @@
 ///(Modified)
 
 void cb_init(circular_buffer *cb, unsigned int capacity, unsigned int sz, void* address){
-    printf("BUFF: %x", (cb));
+    printfn("BUFF: %x", (cb));
     cb->buffer = &address;
     cb->buffer_end = (char *)cb->buffer + capacity * sz;
     cb->capacity = capacity;

@@ -18,12 +18,12 @@
 .global change_SUPERVISOR
 
 .macro mode_change mode
-    MOV r1, lr
-    MRS r0, CPSR
-    BIC r0, r0, #0x1F     //Map the last 5 Bits: 11111
-    ORR r0, r0, #\mode  //set to FIQ_MODE
-    MSR CPSR, r0
-    MOV PC, r1
+    MOV r5, lr
+    MRS r6, CPSR
+    BIC r6, r6, #0x1F     //Map the last 5 Bits: 11111
+    ORR r6, r6, #\mode  //set to FIQ_MODE
+    MSR CPSR, r6
+    MOV PC, r5
 .endm
 
 enable_interrupts:

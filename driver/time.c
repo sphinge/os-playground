@@ -7,17 +7,13 @@ int init_PIT(){
    volatile int* st_ier = (int*) (ST + ST_IER);
 
    *st_ier = 1;                         //ENABLE INTERRUPT IN SR
-   *pimr = 0x8000;                      //SET ST TIME
+   *pimr = 0xC000;                      //SET ST TIME
    return 0;
 }
 
 int st_handler(int* regs_address){       //TODO vielleicht handler pos ändern
     printf("!");
-
-    int x = scheduler(regs_address);
-
-    printf("%d", x);
-
+    scheduler(regs_address);
     return 0;
 }
 

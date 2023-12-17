@@ -5,6 +5,7 @@
 
 //PRINT.C
 int printf(char msg[], ...);
+int printfn(char msg[], ...);
 char* uint_to_hex(int num, char* hex);
 char* int_to_decimal(int num, char* str);
 

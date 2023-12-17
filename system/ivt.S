@@ -55,8 +55,8 @@ fiq:
     SUBS pc, lr, #4
 
 s1_irq:
-    STMFD sp!, {r0-r12, lr}   //save context
-    bl bkpt
+    STMFD sp!, {r0-r12}   //save context
+    STMFD sp!, {lr}       //TODO wtf 2.0 look down
     bl change_SYSTEM  //save back sp, lr
     MOV r0, sp
     MOV r1, lr
@@ -67,13 +67,14 @@ s1_irq:
 
     MOV r0, sp
     BL s1_handler     //start handler
-
     LDMFD sp!, {r0-r2}
     MSR SPSR, r2
+
     bl change_SYSTEM  //save back sp, lr
     MOV sp, r0
     MOV lr, r1
     bl change_IRQ
 
-    LDMFD sp!, {r0-r12, lr}
+    LDMFD sp!, {lr}           //TODO wtf why LDMFD sp!, {lr, r0-r12} not working
+    LDMFD sp!, {r0-r12}
     SUBS pc, lr, #4

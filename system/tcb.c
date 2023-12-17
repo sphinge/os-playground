@@ -8,43 +8,80 @@ int init_tcb(void* address, int size){
     TCB_array = address;
     TCB_size = size;
 
-    struct TCB empty = { 0, {0}, 0, 0, TASK_TERMINATED};
+    struct TCB empty = { -1, {0},TASK_TERMINATED};
     for (int i = 0; i < TCB_size; i++) {
-        TCB_array[i] = empty;
+        memcpy(&TCB_array[i], &empty, sizeof(struct TCB));
     }
+    memcpy(&TCB_array[TCB_size], &empty, sizeof(struct TCB));
+    create_idle();
     return 0;
 }
 
-int create_t(int* start_t){
-    disable_interrupts();
-    tcb_insert((int) start_t);   //TODO option for arguments
-    enable_interrupts();
+int save_context(int tcb_thread, int* regs_address){
+    memcpy(TCB_array[tcb_thread].regs, regs_address, REGISTER_NUM * 4);
     return 0;
 }
 
-int kill_t(){
-    disable_interrupts();
-    tcb_remove();
-    enable_interrupts();
+int create_t(int* start_t, int arg_num , ...){
+    int* ap;
+    ap = (int*) &start_t + 1;
+    //disable_interrupts();  //
+    tcb_insert((int) start_t, arg_num, (ap+2));
+    //enable_interrupts();
     return 0;
 }
 
-//TODO LOGICAL SCHEDULE OR INSERT ERROR
-int tcb_insert(int start_t){         //Thread init  if 0 everything is good, if -1 no space for new thread
+int create_idle(){
+    int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * TCB_size);
     struct TCB tcb;
-    tcb.id = tid_counter;
-    for (int i = 1; i < REGISTER_NUM; i++) {
+
+    tcb.id = -2;
+
+    for (int i = 0; i < REGISTER_NUM; i++) {
         tcb.regs[i] = 0;
     }
-    tcb.regs[0] = 0b10000;    //Set CPSR to USER
-    tcb.regs[3] = start_t;    //Set PC
+    tcb.regs[0] = stack_pointer;              //set stack pointer
+    tcb.regs[2] = 0b10000;                    //Set CPSR to USER
+    tcb.regs[3] = (int) (idle + 4);           //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
+
+    tcb.status = TASK_IDLE;
+
+    memcpy(&TCB_array[TCB_size], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
+    return 0;
+}
+
+void kill_t(){        //TODO call tcb rmeove from not USR MODE
+    //disable_interrupts();
+    tcb_remove();
+    //enable_interrupts();
+    while (1){}
+}
+
+int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
+    struct TCB tcb;
+    tcb.id = tid_counter;
+    for (int i = 0; i < REGISTER_NUM; i++) {
+        tcb.regs[i] = 0;
+    }
+    for (int i = 0; (i < 4) && (i < arg_num); ++i) {                //Setup Registers with args
+        tcb.regs[4+i] = args[i];
+    }
+    arg_num -= 4;
+
+    tcb.regs[2] = 0b10000;        //Set CPSR to USER
+    tcb.regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
 
     tcb.status = TASK_NEW;
 
     for (int i = 0; i < TCB_size; i++) {
         if(TCB_array[i].status == TASK_TERMINATED)
         {
-            tcb.regs[2] = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i);              //set stack pointer
+            int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i);
+            tcb.regs[0] = stack_pointer;              //set stack pointer
+
+            if(arg_num > 0){
+                memcpy((void *) stack_pointer, &args[4], arg_num * 4); //Setup Args in stack
+            }
             memcpy(&TCB_array[i], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
             tid_counter ++;
             return 0;
@@ -64,6 +101,16 @@ int tcb_remove(){   //0: Termination complete; -1: There is no Running Thread
 }
 
 int run_thread(int tcb_thread, int* regs_address){
-    memcpy(regs_address, TCB_array[tcb_thread].regs, REGISTER_NUM);
+    TCB_array[tcb_thread].status = TASK_RUNNING;
+    memcpy(regs_address, TCB_array[tcb_thread].regs, REGISTER_NUM * 4);
     return 0;
 }
+
+void idle(){
+    while (1){
+        printfn("idle");
+        for (int i = 0; i < 214748364; ++i) {}
+    }
+}
+
+
