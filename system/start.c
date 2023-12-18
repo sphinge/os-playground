@@ -5,7 +5,6 @@
 #include <time.h>
 #include <aic.h>
 #include "debug.h"
-#include <memory.h>
 
 
 int main() {
@@ -18,7 +17,7 @@ int main() {
     init_AIC();
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
-    init_tcb((int *) 0x23050000,5);   //TODO TCB verry small other pos
+    init_tcb((int *) 0x23050000,20);
     enable_interrupts();
 
     while (1){

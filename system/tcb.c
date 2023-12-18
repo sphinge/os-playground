@@ -22,41 +22,6 @@ int save_context(int tcb_thread, int* regs_address){
     return 0;
 }
 
-int create_t(int* start_t, int arg_num , ...){
-    int* ap;
-    ap = (int*) &start_t + 1;
-    //disable_interrupts();  //
-    tcb_insert((int) start_t, arg_num, (ap+2));
-    //enable_interrupts();
-    return 0;
-}
-
-int create_idle(){
-    int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * TCB_size);
-    struct TCB tcb;
-
-    tcb.id = -2;
-
-    for (int i = 0; i < REGISTER_NUM; i++) {
-        tcb.regs[i] = 0;
-    }
-    tcb.regs[0] = stack_pointer;              //set stack pointer
-    tcb.regs[2] = 0b10000;                    //Set CPSR to USER
-    tcb.regs[3] = (int) (idle + 4);           //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
-
-    tcb.status = TASK_IDLE;
-
-    memcpy(&TCB_array[TCB_size], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
-    return 0;
-}
-
-void kill_t(){        //TODO call tcb rmeove from not USR MODE
-    //disable_interrupts();
-    tcb_remove();
-    //enable_interrupts();
-    while (1){}
-}
-
 int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
     struct TCB tcb;
     tcb.id = tid_counter;
@@ -106,11 +71,32 @@ int run_thread(int tcb_thread, int* regs_address){
     return 0;
 }
 
+int create_idle(){
+    int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * TCB_size);
+    struct TCB tcb;
+
+    tcb.id = -2;
+
+    for (int i = 0; i < REGISTER_NUM; i++) {          //TODO set LR to kill_t()
+        tcb.regs[i] = 0;
+    }
+    tcb.regs[0] = stack_pointer;              //set stack pointer
+    //tcb.regs[1] = (int) kill_t;             //TODO
+    tcb.regs[2] = 0b10000;                    //Set CPSR to USER
+    tcb.regs[3] = (int) (idle + 4);           //Set PC EXPECT TO BE LOADED FROM IRQ Routine
+
+    tcb.status = TASK_IDLE;
+
+    memcpy(&TCB_array[TCB_size], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
+    return 0;
+}
+
 void idle(){
     while (1){
         printfn("idle");
         for (int i = 0; i < 214748364; ++i) {}
     }
 }
+
 
 

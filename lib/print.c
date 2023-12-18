@@ -40,7 +40,7 @@ void print_TCB(struct TCB *tcb){}      //TODO
 %p => pointer
 %d => Decimal
 %b => Binary
-%m => String Buffer >>*buff, len<<
+%m => String Buffer >>*buff, len<<       //TODO X
 */
 int printf(char msg[], ...) {        //TODO WTF multiple issues with more than 8 args or to long, we dont know
     int* ap;

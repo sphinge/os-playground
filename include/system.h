@@ -42,19 +42,22 @@ struct TCB {
 struct TCB* TCB_array;
 int TCB_size;
 
-int create_idle();
-int create_t(int* start_t, int arg_num, ...);   //TODO pls not here (new file)
-void kill_t();
-
 int init_tcb(void* address, int size);
 int save_context(int tcb_thread, int* regs_address);
 int tcb_insert(int start_t,int arg_num, int* args);
+int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add);  //TODO
 int tcb_remove();
 int run_thread(int tcb_thread, int* regs_address);
+int create_idle();
 void idle();
+
+//THREAD.C
+int create_t(int* start_t, int arg_num, ...);   //TODO pls not here (new file)
+void kill_t();
 
 //SCHEDULER.C
 int scheduler(int* regs_address);
+int pause_all(int* regs_address);
 int pause_thread(int tcb_thread, int* regs_address);
 
 //CPU.S

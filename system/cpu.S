@@ -27,7 +27,7 @@
 .endm
 
 enable_interrupts:
-    STMFD sp!, {r0-r12, lr}
+    STMFD sp!, {r0-r12, lr}   //TODO maybe just STMFD sp!, {r0, lr}
     MRS r0, CPSR
     BIC r0, r0, #0xC0
     MSR CPSR_c, r0
