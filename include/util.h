@@ -20,5 +20,8 @@ int cb_pop_front(circular_buffer *cb, void *item);
 
 char* uint_to_hex(int num, char* hex);
 char* int_to_decimal(int num, char* str);
+int strlen(const char *str);
+char* _format(char msg[], char out[], int* argv);
+char* format(char* msg, char* out, ...);
 
 #endif //_UTIL_H

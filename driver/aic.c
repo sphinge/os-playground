@@ -8,4 +8,5 @@ int init_AIC(){
     *svr1 = (volatile int) s1_irq;   //SET UP THE HANDLER FUNCTION
     *smr1 = 0;                       //SET PRIO OF SMR Level Sensitive
     *iecr = (1 << 1);                //ENABLE INTERRUPT IN AIC
+    return 0;
 }

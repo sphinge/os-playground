@@ -1,6 +1,7 @@
 #include <debug_unit.h>
 #include <system.h>
 #include <usrIO.h>
+#include <util.h>
 
 char buffer[BUFFER_SIZE];
 char* head;
@@ -42,21 +43,37 @@ int init_DBGU_Interrupt(){
 }
 
 int enable_DBGU(){
-   volatile int* cr = (int*) (DBGU + DBGU_CR);
-   *cr = (1 << 6) | (1 << 4);
-   return 0;
+    volatile int* cr = (int*) (DBGU + DBGU_CR);
+    *cr = (1 << 6) | (1 << 4);
+    return 0;
 }
 
 int disable_DBGU(){
-   volatile int* cr = (int*) (DBGU + DBGU_CR);
-   *cr = 0;
-   return 0;
+    volatile int* cr = (int*) (DBGU + DBGU_CR);
+    *cr = 0;
+    return 0;
 }
 
 //simple output of String
 void print_DBGU(char c){
-   volatile int* thr = (int*) (DBGU + DBGU_THR);
+    volatile int* thr = (int*) (DBGU + DBGU_THR);
     *thr = c;
+}
+
+void print_pointer_DBGU(int* x) {
+    print_DBGU('<');
+    char ptr[] = "0x00000000";
+    uint_to_hex((int) *x, ptr);
+    for(int i = 0; i<10; i++) {
+        print_DBGU(ptr[i]);
+    }
+    print_DBGU('>');
+}
+
+void print_string_DBGU(char* s, int length) {
+    for (int i = 0; i<length; i++) {
+        print_DBGU(s[i]);
+    }
 }
 
 char receive_DBGU(){           //get first not read element from buffer

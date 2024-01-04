@@ -20,6 +20,8 @@ int dbgu_handler();
 int enable_DBGU();
 int disable_DBGU();
 void print_DBGU(char c);
+void print_pointer_DBGU(int* x);
+void print_string_DBGU(char* s, int length);
 char receive_DBGU();
 void reset_Buffer_DBGU();
 

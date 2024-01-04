@@ -36,6 +36,7 @@ int pause_all(int* regs_address){
     if(TCB_array[TCB_size].status == TASK_RUNNING){      //pause idle on running no context save needed
         TCB_array[TCB_size].status = TASK_IDLE;
     }
+    return 0;
 }
 
 int pause_thread(int tcb_thread, int *regs_address){

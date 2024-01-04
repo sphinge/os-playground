@@ -32,181 +32,65 @@ void print_TCB_State(struct TCB *tcb){
 }
 void print_TCB(struct TCB *tcb){}      //TODO
 
-
-/* printfn:
-%c => Char
-%s => String
-%x => Hex
-%p => pointer
-%d => Decimal
-%b => Binary
-%m => String Buffer >>*buff, len<<       //TODO X
-*/
-int printf(char msg[], ...) {        //TODO WTF multiple issues with more than 8 args or to long, we dont know
-    int* ap;
-    ap = (int*) &msg + 1;
-    char* hex = "0x00000000";
-    char* str = "";
-    int num;
-    char numberBuffer[12]; // Enough for a 32-bit integer, includes sign and null terminator.
-
-    for(int i = 0; msg[i]; i++) {
+int _printf(char msg[], int* argv) {
+    int* ap = argv;
+    int added_length = 0;
+    int i = 0;
+    for(; msg[i]; i++) {
         if(msg[i] != '%') {
-            print_DBGU(msg[i]);
+            continue;
         }
         else {
             switch(msg[i+1]) {
                 case 'c':
-                    print_DBGU(*ap++);
-                    i++;
+                    added_length++;
                     break;
 
                 case 's':
-                    for(str = (char*) *ap++; *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
+                    added_length += strlen((char*) *ap);
                     break;
 
                 case 'x':
-                    for(str = uint_to_hex((int) *ap++, hex); *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
+                    added_length += 10;
                     break;
 
                 case 'p':
-                    for(str = uint_to_hex((int) ap++, hex); *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
+                    added_length += 10;
                     break;
 
                 case 'd':
-
-                    int_to_decimal((int) *ap++, numberBuffer);
-                    for (char *numStr = numberBuffer; *numStr; numStr++) {
-                        print_DBGU(*numStr);
-                    }
-                    i++;
+                    added_length += 12;
                     break;
 
-                case 'b':              //Wahrlich optimierbar
-                    num = *ap++;
-                    for(int i = 0; i < 32; i++) {
-                        int bits = 0x80000000 >> i;
-                        int little = num & bits;
-                        if(little == 0) {
-                            print_DBGU('0');
-                        }
-                        else {
-                            print_DBGU('1');
-                        }
-                    }
-                    i++;
+                case 'b':
+                    added_length += 32;
                     break;
 
                 case 'm':
-                    str = (char*) *ap++;
-                    num = (int) *ap++;
-                    for(int i = 0; i<num; i++) {
-                        print_DBGU(str[i]);
-                    }
-                    i++;
+                    ap++;
+                    added_length += (int) *ap;
                     break;
 
                 default:
                     print_DBGU('%');
+                    ap--;
             }
+            ap++;
         }
-        str = "";
-        hex = "0x00000000";
-        num = 0;
     }
+    char fstr[i + added_length + 1];
+    _format(msg, fstr, argv);
+    print_string_DBGU(fstr, strlen(fstr));
     return 0;
 }
 
-int printfn(char msg[], ...) {        //TODO WTF multiple issues with more than 8 args or to long, we dont know
-    int* ap;
-    ap = (int*) &msg + 1;
-    char* hex = "0x00000000";
-    char* str = "";
-    int num;
-    char numberBuffer[12]; // Enough for a 32-bit integer, includes sign and null terminator.
+int printf(char msg[], ...) {
+    _printf(msg, (int*) &msg + 1);
+    return 0;
+}
 
-    for(int i = 0; msg[i]; i++) {
-        if(msg[i] != '%') {
-            print_DBGU(msg[i]);
-        }
-        else {
-            switch(msg[i+1]) {
-                case 'c':
-                    print_DBGU(*ap++);
-                    i++;
-                    break;
-
-                case 's':
-                    for(str = (char*) *ap++; *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
-                    break;
-
-                case 'x':
-                    for(str = uint_to_hex((int) *ap++, hex); *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
-                    break;
-
-                case 'p':
-                    for(str = uint_to_hex((int) ap++, hex); *str; str++) {
-                        print_DBGU(*str);
-                    }
-                    i++;
-                    break;
-
-                case 'd':
-
-                    int_to_decimal((int) *ap++, numberBuffer);
-                    for (char *numStr = numberBuffer; *numStr; numStr++) {
-                        print_DBGU(*numStr);
-                    }
-                    i++;
-                    break;
-
-                case 'b':              //Wahrlich optimierbar
-                    num = *ap++;
-                    for(int i = 0; i < 32; i++) {
-                        int bits = 0x80000000 >> i;
-                        int little = num & bits;
-                        if(little == 0) {
-                            print_DBGU('0');
-                        }
-                        else {
-                            print_DBGU('1');
-                        }
-                    }
-                    i++;
-                    break;
-
-                case 'm':
-                    str = (char*) *ap++;
-                    num = (int) *ap++;
-                    for(int i = 0; i<num; i++) {
-                        print_DBGU(str[i]);
-                    }
-                    i++;
-                    break;
-
-                default:
-                    print_DBGU('%');
-            }
-        }
-        str = "";
-        hex = "0x00000000";
-        num = 0;
-    }
+int printfn(char msg[], ...) {
+    _printf(msg, (int*) &msg + 1);
     print_DBGU('\n');
     return 0;
 }

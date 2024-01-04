@@ -4,6 +4,7 @@
 #include <stack.h>
 #include <time.h>
 #include <aic.h>
+#include <util.h>
 #include "debug.h"
 
 
@@ -13,6 +14,11 @@ int main() {
     char msg1[] = "MoinsenOS";
     printfn(msg1);
 
+    // format test, uncomment to test
+    // char s[] = "teststring '%c' char, '%s' string, '%x' hex, '%d' decimal, '%b' binary, '%p' pointer, '%m' memory";
+    // int testnum = 0x12345678;
+    // printfn(s, '/', msg1, testnum, testnum, testnum, testnum, msg1+2, 7);
+    
     init_ISR();
     init_AIC();
     init_PIT();       //periodic interrupt timer
