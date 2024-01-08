@@ -24,35 +24,44 @@ int save_context(int tcb_thread, int* regs_address){
 
 int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
     struct TCB tcb;
-    tcb.id = tid_counter;
-    for (int i = 0; i < REGISTER_NUM; i++) {
-        tcb.regs[i] = 0;
-    }
-    for (int i = 0; (i < 4) && (i < arg_num); ++i) {                //Setup Registers with args
-        tcb.regs[4+i] = args[i];
-    }
-    arg_num -= 4;
-
-    tcb.regs[2] = 0b10000;        //Set CPSR to USER
-    tcb.regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
-
-    tcb.status = TASK_NEW;
 
     for (int i = 0; i < TCB_size; i++) {
         if(TCB_array[i].status == TASK_TERMINATED)
         {
-            int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i);
-            tcb.regs[0] = stack_pointer;              //set stack pointer
+           // int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i);
 
-            if(arg_num > 0){
-                memcpy((void *) stack_pointer, &args[4], arg_num * 4); //Setup Args in stack
-            }
+            create_tcb(&tcb, start_t, arg_num, args, TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i));
+
             memcpy(&TCB_array[i], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
             tid_counter ++;
             return 0;
         }
     }
     return -1;
+}
+
+int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add){
+    tcb->id = tid_counter;
+    tcb->status = TASK_NEW;
+
+    tcb->regs[0] = stack_add;      //set stack pointer
+    //tcb->regs[1] = (int) kill_t; //TODO
+    tcb->regs[2] = 0b10000;        //Set CPSR to USER
+    tcb->regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
+
+    for (int i = 4; i < REGISTER_NUM; i++) {
+        tcb->regs[i] = 0;
+    }
+
+    for (int i = 0; (i < 4) && (i < arg_num); ++i) {                //Setup Registers with args
+        tcb->regs[4+i] = args[i];
+    }
+    arg_num -= 4;
+
+    if(arg_num > 0){
+        memcpy((void *) stack_add, &args[4], arg_num * 4); //Setup Args in stack
+    }
+    return 0;
 }
 
 int tcb_remove(){   //0: Termination complete; -1: There is no Running Thread
@@ -77,7 +86,7 @@ int create_idle(){
 
     tcb.id = -2;
 
-    for (int i = 0; i < REGISTER_NUM; i++) {          //TODO set LR to kill_t()
+    for (int i = 0; i < REGISTER_NUM; i++) {
         tcb.regs[i] = 0;
     }
     tcb.regs[0] = stack_pointer;              //set stack pointer

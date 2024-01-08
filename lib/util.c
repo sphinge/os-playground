@@ -54,7 +54,7 @@ char* uint_to_hex(int num, char* hex){
 char* int_to_decimal(int num, char* str){
     int count = 0;
     int r = 0;
-    int v = 0;  
+    int v = 0;
     char str_num[11]; // maximal darstellbare größe einer Zahl
 
     if(num < 0){

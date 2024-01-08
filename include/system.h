@@ -45,14 +45,14 @@ int TCB_size;
 int init_tcb(void* address, int size);
 int save_context(int tcb_thread, int* regs_address);
 int tcb_insert(int start_t,int arg_num, int* args);
-int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add);  //TODO
+int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add);
 int tcb_remove();
 int run_thread(int tcb_thread, int* regs_address);
 int create_idle();
 void idle();
 
 //THREAD.C
-int create_t(int* start_t, int arg_num, ...);   //TODO pls not here (new file)
+int create_t(int* start_t, int arg_num, ...);
 void kill_t();
 
 //SCHEDULER.C
@@ -64,7 +64,7 @@ int pause_thread(int tcb_thread, int* regs_address);
 void enable_interrupts();
 void disable_interrupts();
 
-void change_FIQ();              //TODO  LR und SP als übergabe werte nicht in c nutzen !
+void change_FIQ();
 void change_IRQ();
 void change_ABORT();
 void change_UNDEFINED();

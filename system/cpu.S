@@ -17,7 +17,7 @@
 .global change_SYSTEM
 .global change_SUPERVISOR
 
-.macro mode_change mode
+.macro mode_change mode           //TODO  potenzielle fehler ? weil r5 nicht volatile
     MOV r5, lr
     MRS r6, CPSR
     BIC r6, r6, #0x1F     //Map the last 5 Bits: 11111

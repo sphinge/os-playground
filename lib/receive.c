@@ -1,6 +1,7 @@
 #include <usrIO.h>
 #include <debug_unit.h>
 #include <memory.h>
+
 //receive String until press Enter
 int receive_line(char str[], int max_input){
     reset_Buffer_DBGU();

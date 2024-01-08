@@ -30,7 +30,11 @@ void print_TCB_State(struct TCB *tcb){
         printfn(msg, id, "ERROR");
     }
 }
-void print_TCB(struct TCB *tcb){}      //TODO
+void print_TCB(struct TCB *tcb){
+    for (int i = 0; i < TCB_size; i++) {
+        print_TCB_State(&TCB_array[i]);
+    }
+}
 
 int _printf(char msg[], int* argv) {
     int* ap = argv;
