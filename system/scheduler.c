@@ -1,7 +1,7 @@
 #include <system.h>
 #include <usrIO.h>
 
-int pos = 0;
+int pos = 0;        //TODO consider changing it
 int current_context;
 int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 idle running
     pause_all(regs_address);

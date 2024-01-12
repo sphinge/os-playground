@@ -21,7 +21,7 @@
 init_stack:
     STMFD sp!, {r0-r12, lr}
 
-    set_stack FIQ_MODE 0x24010000
+    set_stack FIQ_MODE 0x24010000            //TODO sp as define on Top
     set_stack IRQ_MODE 0x23090000
     set_stack ABORT_MODE 0x23080000
     set_stack UNDEFINED_MODE 0x23070000

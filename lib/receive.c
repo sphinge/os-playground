@@ -12,7 +12,7 @@ int receive_line(char str[], int max_input){
     int len;
 
     for(len = 0; act != ENTER && len< max_input; len++) {
-        while(!(*check & (1))) {}
+        while(!(*check & (1))) {}     //TODO wait for character and give it to a var
         input[len] = *rhr;
         act = input[len];
         print_DBGU(act);
@@ -22,4 +22,8 @@ int receive_line(char str[], int max_input){
     print_DBGU(act);
     memcpy (str, input, len);
     return 0;
+}
+
+char receive_n() {
+
 }

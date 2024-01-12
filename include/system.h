@@ -20,7 +20,7 @@ int s1_handler(int* regs_address);
 int test_interrupt();
 
 //TCB.C
-#define TCB_STACK_ADDRESS   0x23040000
+#define TCB_STACK_ADDRESS   0x23030000
 #define TCB_STACK_SPACE     0x00010000
 #define REGISTER_NUM        17
 
@@ -37,6 +37,10 @@ struct TCB {
     int id;
     int regs[REGISTER_NUM];    //TOP OF STACK -> BOTTOM: SP, LR, CPSR, PC, R0-R12
     State status;
+    struct TCB* prev;
+    struct TCB* next;
+    int waiting_state;    //only for TASK_WAITING :)
+    int prio;
 };
 
 struct TCB* TCB_array;
@@ -47,7 +51,7 @@ int save_context(int tcb_thread, int* regs_address);
 int tcb_insert(int start_t,int arg_num, int* args);
 int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add);
 int tcb_remove();
-int run_thread(int tcb_thread, int* regs_address);
+int run_thread(struct TCB* tcb_thread, int* regs_address);
 int create_idle();
 void idle();
 

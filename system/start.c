@@ -26,6 +26,7 @@ int main() {
     init_tcb((int *) 0x23050000,20);
     enable_interrupts();
 
+
     while (1){
         printfn("ff");
         for (int i = 0; i < 214748364; ++i) {}
