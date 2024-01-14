@@ -7,6 +7,13 @@
 #include <util.h>
 #include "debug.h"
 
+void test(int n){
+    while (1)
+    {
+        printfn("%d: hello", n);
+        for (int i = 0; i < 214748364; ++i) {}
+    }
+}
 
 int main() {
     init_stack();
@@ -24,8 +31,11 @@ int main() {
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
     init_tcb((int *) 0x23050000,20);
-    enable_interrupts();
 
+    for (int i = 0; i < 3; ++i) {
+        create_t((int*)test,1, i);
+    }
+    enable_interrupts();
 
     while (1){
         printfn("ff");

@@ -9,9 +9,9 @@ int create_t(int* start_t, int arg_num , ...){   //TODO call tcb remove from SYS
     return 0;
 }
 
-void kill_t(){
+void kill_t(){       //TODO
     //disable_interrupts();
-    tcb_remove();
+    //tcb_remove();
     //enable_interrupts();
     while (1){}
 }

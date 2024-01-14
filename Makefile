@@ -45,7 +45,7 @@ CC = $(LINNERT)/arm-none-eabi-gcc
 LD = $(LINNERT)/arm-none-eabi-ld
 OBJCOPY = /home/mi/linnert/arm/bin/arm-none-eabi-objcopy
 
-CFLAGS = -Wall -Wextra -ffreestanding -mcpu=arm920t -Og -g -std=c11
+CFLAGS = -Wall -Wextra -ffreestanding -mcpu=arm920t -Og -g -std=c11 #-mabi=ABI
 CPPFLAGS = -Iinclude
 #LIBGCC := $(shell $(CC) -print-libgcc-file-name)
 

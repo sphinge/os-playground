@@ -64,6 +64,8 @@ char* int_to_decimal(int num, char* str){
 
     if(num == 0) {
         str[0] = '0';
+        str[1] = '\0';
+        return str;
     }
     while(num != 0) {
         r = num % 10;

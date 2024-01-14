@@ -24,6 +24,11 @@ int test_interrupt();
 #define TCB_STACK_SPACE     0x00010000
 #define REGISTER_NUM        17
 
+struct TCB* running_head;
+struct TCB* sleeping_head;
+struct TCB* waiting_head;
+struct TCB* empty_head;
+
 typedef enum{
     TASK_NEW,
     TASK_READY,
@@ -35,6 +40,7 @@ typedef enum{
 
 struct TCB {
     int id;
+    int stack_base;
     int regs[REGISTER_NUM];    //TOP OF STACK -> BOTTOM: SP, LR, CPSR, PC, R0-R12
     State status;
     struct TCB* prev;
@@ -47,10 +53,11 @@ struct TCB* TCB_array;
 int TCB_size;
 
 int init_tcb(void* address, int size);
-int save_context(int tcb_thread, int* regs_address);
+int save_context(struct TCB* tcb_thread, int* regs_address);
 int tcb_insert(int start_t,int arg_num, int* args);
 int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_add);
-int tcb_remove();
+int tcb_list_remove(struct TCB* tcb, struct TCB** list_head_ptr);
+int tcb_list_insert(struct TCB* tcb, struct TCB* tcb_after, struct TCB** list_head_ptr);
 int run_thread(struct TCB* tcb_thread, int* regs_address);
 int create_idle();
 void idle();
