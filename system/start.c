@@ -11,6 +11,8 @@ void test(int n){
     while (1)
     {
         printfn("%d: hello", n);
+        bkpt();
+        __asm__("SWI #1");
         for (int i = 0; i < 214748364; ++i) {}
     }
 }

@@ -4,6 +4,7 @@
 #include <usrIO.h>
 #include <time.h>
 #include <aic.h>
+#include "debug.h"
 
 int init_ISR(){
     int ivt_size = ivt_end-ivt_start;
@@ -24,8 +25,9 @@ int isr_ui(){
     return 0;
 }
 
-int isr_swi(){
-    printfn(">SWI ISR<");
+int isr_swi(int swi){
+    bkpt();
+    printfn(">SWI ISR: %d<", swi);
     return 0;
 }
 

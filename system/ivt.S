@@ -34,6 +34,9 @@ undefined_instruction:
 
 software_interrupt:            //SWI stays in SUPERVISOR because Usermode is not initialized!
     STMFD sp!, {r0-r12, lr}
+    SUB lr, lr, #4             //TODO
+    LDR r0, [lr]
+    AND r0, r0, #0x00FFFFFF
     bl isr_swi                 //start isr_swi
     LDMFD sp!, {r0-r12, pc}^        //Suffix ^ -> Wechsel des Modus statt MOVS 
 
