@@ -25,9 +25,24 @@ int isr_ui(){
     return 0;
 }
 
-int isr_swi(int swi){
-    bkpt();
+int isr_swi(int swi, int* regs_address,struct TCB* context){
     printfn(">SWI ISR: %d<", swi);
+
+    int* buffer;
+    switch (swi) {
+        case 0:
+            buffer = context->buffer;
+            bkpt();
+            _create_t((void*) buffer[0], buffer[1], &buffer[2]);
+            printfn("jup");
+
+            break;
+
+        case 1:
+            //_kill_t(context);
+            scheduler(regs_address);
+            break;
+    }
     return 0;
 }
 
@@ -38,6 +53,7 @@ int isr_pa(){
 
 int isr_da(){
     printfn(">DA ISR<");
+    while (1){} //TODO
     return 0;
 }
 

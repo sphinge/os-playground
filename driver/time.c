@@ -12,7 +12,7 @@ int init_PIT(){
 }
 
 int st_handler(int* regs_address){       //TODO vielleicht handler pos ändern
-    printf("!");
+    printf("!");                     //TODO
     scheduler(regs_address);
     return 0;
 }

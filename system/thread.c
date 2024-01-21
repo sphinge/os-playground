@@ -1,17 +1,15 @@
 #include <system.h>
+#include <debug.h>
 
-int create_t(int* start_t, int arg_num , ...){   //TODO call tcb remove from SYS not USR MODE
-    int* ap;
-    ap = (int*) &start_t + 1;
-    //disable_interrupts();
-    tcb_insert((int) start_t, arg_num, (ap+2));
-    //enable_interrupts();
+int _create_t(int* start_t, int arg_num , int* args){   //TODO call tcb remove from SYS not USR MODE
+    tcb_insert((int) start_t, arg_num, args);
+    bkpt();
     return 0;
 }
 
-void kill_t(){       //TODO
-    //disable_interrupts();
-    //tcb_remove();
-    //enable_interrupts();
-    while (1){}
+int _kill_t(struct TCB* context){       //TODO
+    tcb_list_remove(context, &running_head);
+    context->status = TASK_TERMINATED;
+    tcb_list_insert(context,empty_head, empty_head);
+    return 0;
 }

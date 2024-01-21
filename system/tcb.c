@@ -13,7 +13,7 @@ int init_tcb(void* address, int size){
     TCB_array = address;
     TCB_size = size;
 
-    struct TCB empty = {-1, 0,{0},TASK_TERMINATED, 0, 0, 0, 0};
+    struct TCB empty = {-1, 0,{0},TASK_TERMINATED, 0, 0, 0, 0, {0}};
 
     for (int i = 0; i < TCB_size; i++) {
         memcpy(&TCB_array[i], &empty, sizeof(struct TCB));
@@ -24,17 +24,19 @@ int init_tcb(void* address, int size){
     TCB_array[0].prev = &TCB_array[TCB_size-1];
     TCB_array[TCB_size-1].next = &TCB_array[0];
     empty_head = TCB_array;
-
     create_idle();        //TODO mov idle to first pos
+    current_context = &TCB_array[TCB_size];
     return 0;
 }
 
 int save_context(struct TCB* tcb_thread, int* regs_address){
+    //printfn("Context:%x", tcb_thread->regs);
     memcpy(tcb_thread->regs, regs_address, REGISTER_NUM * 4);
     return 0;
 }
 
 int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
+
     if(empty_head == 0) {
         return 1;
     }
@@ -58,7 +60,7 @@ int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_a
     tcb->stack_base = stack_address;
 
     tcb->regs[0] = stack_address;      //set stack pointer
-    //tcb->regs[1] = (int) kill_t; //TODO
+    //tcb->regs[1] = (int) _kill_t; //TODO
     tcb->regs[2] = 0b10000;        //Set CPSR to USER
     tcb->regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
 
@@ -80,12 +82,12 @@ int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_a
 int tcb_list_remove(struct TCB* tcb, struct TCB** list_head_ptr){   //0: Termination complete;
     if(tcb->next == tcb){
         *list_head_ptr = 0;
-    }
-    if(tcb == *list_head_ptr)
-    {
-        *list_head_ptr = tcb->next;
         return 0;
     }
+    if(tcb == *list_head_ptr){
+        *list_head_ptr = tcb->next;
+    }
+
     tcb->next->prev = tcb->prev;
     tcb->prev->next = tcb->next;
     return 0;
@@ -119,7 +121,7 @@ int create_idle(){
     tcb.id = -2;
 
     tcb.regs[0] = stack_pointer;              //set stack pointer
-    //tcb.regs[1] = (int) kill_t;             //TODO
+    //tcb.regs[1] = (int) _kill_t;             //TODO
     tcb.regs[2] = 0b10000;                    //Set CPSR to USER
     tcb.regs[3] = (int) (idle + 4);           //Set PC EXPECT TO BE LOADED FROM IRQ Routine
 

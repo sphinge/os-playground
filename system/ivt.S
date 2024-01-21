@@ -33,12 +33,36 @@ undefined_instruction:
     LDMFD sp!, {r0-r12, pc}^
 
 software_interrupt:            //SWI stays in SUPERVISOR because Usermode is not initialized!
-    STMFD sp!, {r0-r12, lr}
-    SUB lr, lr, #4             //TODO
-    LDR r0, [lr]
-    AND r0, r0, #0x00FFFFFF
-    bl isr_swi                 //start isr_swi
-    LDMFD sp!, {r0-r12, pc}^        //Suffix ^ -> Wechsel des Modus statt MOVS 
+        STMFD sp!, {r0-r12}    //save context
+        STMFD sp!, {lr}
+
+        SUB lr, lr, #4             //get intermediate value
+        LDR r4, [lr]
+        AND r4, r4, #0x00FFFFFF
+
+        bl change_SYSTEM  //save back sp, lr
+        MOV r0, sp
+        MOV r1, lr
+        bl change_SUPERVISOR
+
+        MRS r2, SPSR
+        STMFD sp!, {r0-r2}
+
+        MOV r0, r4
+        MOV r1, sp
+        BL isr_swi     //start handler
+
+        LDMFD sp!, {r0-r2}
+        MSR SPSR, r2
+
+        bl change_SYSTEM  //save back sp, lr
+        MOV sp, r0        //TODO lr seems wrong restored
+        MOV lr, r1
+        bl change_SUPERVISOR
+
+        LDMFD sp!, {lr}
+        LDMFD sp!, {r0-r12}
+        MOVS pc, lr
 
 prefetch_abort:
     STMFD sp!, {r0-r12, lr}

@@ -7,16 +7,6 @@
 #include <util.h>
 #include "debug.h"
 
-void test(int n){
-    while (1)
-    {
-        printfn("%d: hello", n);
-        bkpt();
-        __asm__("SWI #1");
-        for (int i = 0; i < 214748364; ++i) {}
-    }
-}
-
 int main() {
     init_stack();
     enable_DBGU();
@@ -33,11 +23,6 @@ int main() {
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
     init_tcb((int *) 0x23050000,20);
-
-    for (int i = 0; i < 3; ++i) {
-        create_t((int*)test,1, i);
-    }
-    enable_interrupts();
 
     while (1){
         printfn("ff");
