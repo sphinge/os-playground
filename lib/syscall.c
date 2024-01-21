@@ -1,37 +1,41 @@
 #include <syscall.h>
-#include <system.h>
 #include <memory.h>
 #include <usrIO.h>
 
 int create_t(int* start_t, int arg_num, ...){
-    //void* buffer = current_context->buffer;
-    //int* ap = (int*) &start_t;
 
-    //memcpy(buffer, ap, 2* sizeof(int) + arg_num*sizeof(int));   //TODO check if args working
-
-    //__asm__("MOV r2, %0" : : "r"(current_context));
-
+    int* ap = (int*) &arg_num + 1;
+    int volatile buffer[] = {(int) start_t, arg_num, (int) ap};
+    //print_buffer(buffer, 3);
+    __asm__("MOV r1, %0" : : "r"(buffer));
     __asm__("SWI #0");
     return 0;
 }
+
 void kill_t(){
-    __asm__("MOV r2, %0" : : "r"(current_context));
+    //__asm__("MOV r1, %0" : : "r"(current_context));
     __asm__("SWI #1");
 }
-int print(char msg[], ...){
+
+int sleep(int interval){
+    int volatile buffer[] = {interval};
+    __asm__("MOV r1, %0" : : "r"(buffer));
     __asm__("SWI #2");
+    return 0;
+}
+
+int print(char msg[], int length){
+    int volatile buffer[] = {(volatile int) msg, length};
+    __asm__("MOV r1, %0" : : "r"(buffer));
+    __asm__("SWI #3");
     return 0;
 }
 int receive(char str[], int max_input){
 
-    __asm__("SWI #3");
-    return 0;
-}
-int sleep(int interval){
-
     __asm__("SWI #4");
     return 0;
 }
+
 
 /*
 __asm__("SWI #5"); -> create lock -> int 4000 return

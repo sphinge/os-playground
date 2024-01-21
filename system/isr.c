@@ -25,23 +25,31 @@ int isr_ui(){
     return 0;
 }
 
-int isr_swi(int swi, int* regs_address,struct TCB* context){
-    printfn(">SWI ISR: %d<", swi);
+int isr_swi(int swi, int buffer[], int* regs_address){
+    //printfn(">SWI ISR: %d<", swi);   //TODO
+    //print_buffer(buffer, 3);
 
-    int* buffer;
     switch (swi) {
         case 0:
-            buffer = context->buffer;
-            bkpt();
-            _create_t((void*) buffer[0], buffer[1], &buffer[2]);
-            printfn("jup");
-
+            _create_t((void*) buffer[0], buffer[1], (int *) buffer[2]);
             break;
 
         case 1:
-            //_kill_t(context);
+            _kill_t(current_context);
             scheduler(regs_address);
             break;
+
+        case 2:
+            save_context(current_context, regs_address);    //TODO context is not loaded correct
+            _sleep(current_context, buffer[0]);
+            scheduler(regs_address);
+            break;
+
+        case 3:    //TODO
+            print_string_DBGU((char *) buffer[0], buffer[1]);
+            break;
+        default:
+            printf("unknown SWI: %d", swi);
     }
     return 0;
 }

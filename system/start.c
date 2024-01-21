@@ -22,7 +22,7 @@ int main() {
     init_AIC();
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
-    init_tcb((int *) 0x23050000,20);
+    init_tcb((int *) 0x23000000,20);
 
     while (1){
         printfn("ff");

@@ -13,7 +13,7 @@ int init_tcb(void* address, int size){
     TCB_array = address;
     TCB_size = size;
 
-    struct TCB empty = {-1, 0,{0},TASK_TERMINATED, 0, 0, 0, 0, {0}};
+    struct TCB empty = {-1, 0,{0},TASK_TERMINATED, 0, 0, 0, 0};
 
     for (int i = 0; i < TCB_size; i++) {
         memcpy(&TCB_array[i], &empty, sizeof(struct TCB));
@@ -26,12 +26,19 @@ int init_tcb(void* address, int size){
     empty_head = TCB_array;
     create_idle();        //TODO mov idle to first pos
     current_context = &TCB_array[TCB_size];
+    printfn("last address: %x", &TCB_array[TCB_size] + sizeof(struct TCB));
     return 0;
 }
 
 int save_context(struct TCB* tcb_thread, int* regs_address){
     //printfn("Context:%x", tcb_thread->regs);
     memcpy(tcb_thread->regs, regs_address, REGISTER_NUM * 4);
+    return 0;
+}
+
+int run_thread(struct TCB* tcb_thread, int* regs_address){        //TODO use waiting_state in tcb struct (dont be confused :) fr)
+    tcb_thread->status = TASK_RUNNING;
+    memcpy(regs_address, tcb_thread->regs, REGISTER_NUM * 4);
     return 0;
 }
 
@@ -105,12 +112,6 @@ int tcb_list_insert(struct TCB* tcb, struct TCB* tcb_after, struct TCB** list_he
         tcb_after->next = tcb;
         tcb->prev = tcb_after;
     }
-    return 0;
-}
-
-int run_thread(struct TCB* tcb_thread, int* regs_address){        //TODO use waiting_state in tcb struct (dont be confused :) fr)
-    tcb_thread->status = TASK_RUNNING;
-    memcpy(regs_address, tcb_thread->regs, REGISTER_NUM * 4);
     return 0;
 }
 

@@ -4,7 +4,7 @@
 int create_t(int* start_t, int arg_num, ...);
 void kill_t();
 int sleep(int interval);
-int print(char msg[], ...);
+int print(char msg[], int length);
 int receive(char str[], int max_input);
 //int receive_line(char str[], int max_input);
 //int receive_n(char str[], int n_chars);

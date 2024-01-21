@@ -7,6 +7,7 @@
 int _printf(char msg[], int* argv);
 int printf(char msg[], ...);
 int printfn(char msg[], ...);
+int print_buffer(int* buffer, int length);
 char* uint_to_hex(int num, char* hex);       //TODO -> util
 char* int_to_decimal(int num, char* str);
 

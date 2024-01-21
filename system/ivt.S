@@ -32,13 +32,14 @@ undefined_instruction:
     bl isr_ui                 //start isr_ui
     LDMFD sp!, {r0-r12, pc}^
 
-software_interrupt:            //SWI stays in SUPERVISOR because Usermode is not initialized!
+software_interrupt:   //SWI stays in SUPERVISOR because Usermode is not initialized!
         STMFD sp!, {r0-r12}    //save context
         STMFD sp!, {lr}
 
         SUB lr, lr, #4             //get intermediate value
-        LDR r4, [lr]
-        AND r4, r4, #0x00FFFFFF
+        LDR r0, [lr]
+        AND r0, r0, #0x00FFFFFF
+        STMFD sp!, {r0-r1}    //save arguments
 
         bl change_SYSTEM  //save back sp, lr
         MOV r0, sp
@@ -46,10 +47,12 @@ software_interrupt:            //SWI stays in SUPERVISOR because Usermode is not
         bl change_SUPERVISOR
 
         MRS r2, SPSR
+        LDMFD sp!, {r4-r5}      //restore arguments
         STMFD sp!, {r0-r2}
 
         MOV r0, r4
-        MOV r1, sp
+        Mov r1, r5
+        MOV r2, sp
         BL isr_swi     //start handler
 
         LDMFD sp!, {r0-r2}
@@ -62,6 +65,7 @@ software_interrupt:            //SWI stays in SUPERVISOR because Usermode is not
 
         LDMFD sp!, {lr}
         LDMFD sp!, {r0-r12}
+
         MOVS pc, lr
 
 prefetch_abort:

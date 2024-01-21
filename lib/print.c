@@ -98,3 +98,12 @@ int printfn(char msg[], ...) {
     print_DBGU('\n');
     return 0;
 }
+
+int print_buffer(int* buffer, int length){
+    printf("[");
+    for (int i = 0; i < length-1; i++) {
+        printf("%x, ", buffer[i]);
+    }
+    printf("%x", buffer[length]);
+    printfn("]");
+}

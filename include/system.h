@@ -5,32 +5,9 @@
 #define MC_RCR 0x00     //Remap Command Register
 #define SRAM_ADDRESS 0x200000
 
-//ISR.C and IVT.S
-void ivt_start();
-void ivt_end();
-void s1_irq();
-int init_ISR();
-extern int isr_reset();
-int isr_ui();
-int isr_swi();
-int isr_pa();
-int isr_da();
-int isr_fiq();
-int s1_handler(int* regs_address);
-int test_interrupt();
-
-//TCB.C
 #define TCB_STACK_ADDRESS   0x23030000
 #define TCB_STACK_SPACE     0x00010000
 #define REGISTER_NUM        17
-#define TCB_BUFFER_SIZE     2000
-
-struct TCB* running_head;
-struct TCB* sleeping_head;
-struct TCB* waiting_head;
-struct TCB* empty_head;
-
-struct TCB* current_context;
 
 typedef enum{
     TASK_NEW,
@@ -50,8 +27,31 @@ struct TCB {
     struct TCB* next;
     int waiting_state;    //only for TASK_WAITING :)
     int prio;
-    char buffer[TCB_BUFFER_SIZE];
 };
+
+
+//ISR.C and IVT.S
+void ivt_start();
+void ivt_end();
+void s1_irq();
+int init_ISR();
+extern int isr_reset();
+int isr_ui();
+int isr_swi(int swi, int buffer[], int* regs_address);
+int isr_pa();
+int isr_da();
+int isr_fiq();
+int s1_handler(int* regs_address);
+int test_interrupt();
+
+//TCB.C
+
+struct TCB* running_head;
+struct TCB* sleeping_head;
+struct TCB* waiting_head;
+struct TCB* empty_head;
+
+struct TCB* current_context;
 
 struct TCB* TCB_array;
 int TCB_size;
@@ -66,10 +66,10 @@ int run_thread(struct TCB* tcb_thread, int* regs_address);
 int create_idle();
 void idle();
 
-//THREAD.C
+//SWI_UTIL.C
 int _create_t(int* start_t, int arg_num , int* args);
 int _kill_t(struct TCB* context);
-
+int _sleep(struct TCB* context, int interval);
 //SCHEDULER.C
 int scheduler(int* regs_address);
 int pause_all(int* regs_address);

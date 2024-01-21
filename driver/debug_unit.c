@@ -2,7 +2,6 @@
 #include <usrIO.h>
 #include <util.h>
 #include <syscall.h>
-#include "debug.h"
 
 char buffer[BUFFER_SIZE];
 char* head;
@@ -10,8 +9,15 @@ char* tail;
 
 void repeater(char c){                //TODO test function
     for (int i = 0; i < 10; ++i) {
+        /*
+        char s[3];             //TODO
+        format("%c", s, c);
+        print(s, 2);
+        */
         printf("%c", c);
-        for (int i = 0; i < 214148364; ++i) {}
+        //for (int i = 0; i < 214148364; ++i) {}
+        sleep(1000);       //TODO
+        printfn("yay");
     }
     kill_t();
 }
@@ -30,8 +36,6 @@ int dbgu_handler(){  //uses ring buffer to save new input
         }
     }
     create_t(repeater, 1, *head);         //TODO test function
-    printfn("created t");
-    bkpt();
     return 0;
 }
 
@@ -71,10 +75,11 @@ void print_pointer_DBGU(int* x) {
     print_DBGU('>');
 }
 
-void print_string_DBGU(char* s, int length) {
+int print_string_DBGU(char* s, int length) {
     for (int i = 0; i<length; i++) {
         print_DBGU(s[i]);
     }
+    return 0;
 }
 
 char receive_DBGU(){           //get first not read element from buffer
