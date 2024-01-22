@@ -33,40 +33,40 @@ undefined_instruction:
     LDMFD sp!, {r0-r12, pc}^
 
 software_interrupt:   //SWI stays in SUPERVISOR because Usermode is not initialized!
-        STMFD sp!, {r0-r12}    //save context
-        STMFD sp!, {lr}
+    STMFD sp!, {r0-r12}    //save context
+    ADD lr, lr, #4
+    STMFD sp!, {lr}
 
-        SUB lr, lr, #4             //get intermediate value
-        LDR r0, [lr]
-        AND r0, r0, #0x00FFFFFF
-        STMFD sp!, {r0-r1}    //save arguments
+    SUB lr, lr, #8             //get intermediate value
+    LDR r0, [lr]
+    AND r0, r0, #0x00FFFFFF
+    STMFD sp!, {r0-r1}    //save arguments
 
-        bl change_SYSTEM  //save back sp, lr
-        MOV r0, sp
-        MOV r1, lr
-        bl change_SUPERVISOR
+    BL change_SYSTEM  //save back sp, lr
+    MOV r0, sp
+    MOV r1, lr
+    BL change_SUPERVISOR
 
-        MRS r2, SPSR
-        LDMFD sp!, {r4-r5}      //restore arguments
-        STMFD sp!, {r0-r2}
+    MRS r2, SPSR
+    LDMFD sp!, {r4-r5}      //restore arguments
+    STMFD sp!, {r0-r2}
 
-        MOV r0, r4
-        Mov r1, r5
-        MOV r2, sp
-        BL isr_swi     //start handler
+    MOV r0, r4
+    Mov r1, r5
+    MOV r2, sp
+    BL isr_swi     //start handler
 
-        LDMFD sp!, {r0-r2}
-        MSR SPSR, r2
+    LDMFD sp!, {r0-r2}
+    MSR SPSR, r2
 
-        bl change_SYSTEM  //save back sp, lr
-        MOV sp, r0        //TODO lr seems wrong restored
-        MOV lr, r1
-        bl change_SUPERVISOR
+    BL change_SYSTEM  //save back sp, lr
+    MOV sp, r0        //TODO lr seems wrong restored
+    MOV lr, r1
+    BL change_SUPERVISOR
 
-        LDMFD sp!, {lr}
-        LDMFD sp!, {r0-r12}
-
-        MOVS pc, lr
+    LDMFD sp!, {lr}
+    LDMFD sp!, {r0-r12}
+    SUBS pc, lr, #4
 
 prefetch_abort:
     STMFD sp!, {r0-r12, lr}

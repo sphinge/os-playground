@@ -10,14 +10,12 @@ char* tail;
 void repeater(char c){                //TODO test function
     for (int i = 0; i < 10; ++i) {
         /*
-        char s[3];             //TODO
+        char s[3];
         format("%c", s, c);
         print(s, 2);
         */
-        printf("%c", c);
-        //for (int i = 0; i < 214148364; ++i) {}
-        sleep(1000);       //TODO
-        printfn("yay");
+        printfn("%c", c);
+        sleep(50000);
     }
     kill_t();
 }

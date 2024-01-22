@@ -3,66 +3,62 @@
 #include <time.h>
 int wake_up(struct TCB* context);
 int check_waiting();
+int print_list(struct TCB* list);
 
 int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 idle running
     check_waiting();
+    /*
+    printfn("-------------SCHEDULE-------------");
+    printfn("sys_time: %d, context: %x", system_time, current_context);
+    printfn("running:");
+    print_list(running_head);
+    printfn("sleeping: ");
+    print_list(sleeping_head);
+    */
 
     if(running_head == 0){
-        run_thread(&TCB_array[TCB_size], regs_address);   //idle saved at &TCB_array[TCB_size]  //TODO
-        return 0;
+        current_context = &TCB_array[TCB_size];
     }
-    save_context(current_context, regs_address);
-    running_head = running_head->next;
+    else{
+        save_context(current_context, regs_address);
+        current_context->status = TASK_READY;
+        running_head = running_head->next;
 
-    if(current_context != running_head){printfn("");}
+        if(current_context != running_head){printfn("");}
 
-    current_context = running_head;
-
-    run_thread(running_head, regs_address);
-    return 0;
-}
-
-int pause_all(int* regs_address){
-    for (int t = 0; t < TCB_size; t++) {                //save context to TCB
-        if(TCB_array[t].status == TASK_RUNNING){
-            pause_thread(t, regs_address);
-        }
+        current_context = running_head;
     }
-    if(TCB_array[TCB_size].status == TASK_RUNNING){      //pause idle on running no context save needed
-        TCB_array[TCB_size].status = TASK_IDLE;
-    }
-    return 0;
-}
 
-int pause_thread(int tcb_thread, int *regs_address){
-    TCB_array[tcb_thread].status = TASK_WAITING;
-    //save_context(tcb_thread, regs_address);
+    run_thread(current_context, regs_address);
     return 0;
 }
 
 int check_waiting(){
     if(sleeping_head != 0){
-        if(sleeping_head == sleeping_head->next){
-                wake_up(sleeping_head);
-        }
-        else if(sleeping_head != 0){
-            struct TCB* iter = sleeping_head->next;
-
-            while (iter != sleeping_head){
-                wake_up(iter);
-                iter = iter->next;
-            }
+        if(sleeping_head->waiting_state <= system_time){            //TODO maybe wakeup more than one at a time
+            struct TCB* context = sleeping_head;
+            tcb_list_remove(context, &sleeping_head);
+            context->status = TASK_READY;
+            context->waiting_state = 0;
+            tcb_list_insert(context,running_head, &running_head);   //TODO starve running_head->prev
         }
     }
     return 0;
 }
 
-int wake_up(struct TCB* context){
-    if(context->waiting_state <= system_time){
-        tcb_list_remove(context, &sleeping_head);
-        context->status = TASK_RUNNING;
-        context->waiting_state = 0;
-        tcb_list_insert(context,running_head, &running_head);
+int print_list(struct TCB* list){
+    printf("[");
+    if(list != 0){
+        printf("[%d (%d, %d, %d)], ", list->id, list->prev->id, list->next->id, list->waiting_state);
+        struct TCB *iter = list->next;
+        while (iter != list) {
+            printf("[%d (%d, %d, %d)], ", iter->id, iter->prev->id, iter->next->id, iter->waiting_state);
+            iter = iter->next;
+        }
     }
+    else{
+        printf("-");
+    }
+    printfn("]");
     return 0;
 }

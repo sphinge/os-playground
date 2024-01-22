@@ -133,7 +133,7 @@ int create_idle(){
 
 void idle(){         //TODO use power saving mode for environment
     while (1){
-        printfn("idle");
+        //printfn("idle");
         for (int i = 0; i < 214748364; ++i) {}
     }
 }

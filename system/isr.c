@@ -26,12 +26,9 @@ int isr_ui(){
 }
 
 int isr_swi(int swi, int buffer[], int* regs_address){
-    //printfn(">SWI ISR: %d<", swi);   //TODO
-    //print_buffer(buffer, 3);
-
     switch (swi) {
         case 0:
-            _create_t((void*) buffer[0], buffer[1], (int *) buffer[2]);
+            _create_t((void *) buffer[0], buffer[1], (int *) buffer[2]);
             break;
 
         case 1:
@@ -40,9 +37,12 @@ int isr_swi(int swi, int buffer[], int* regs_address){
             break;
 
         case 2:
+            //print_buffer(current_context->regs, REGISTER_NUM);
             save_context(current_context, regs_address);    //TODO context is not loaded correct
+            //print_buffer(current_context->regs, REGISTER_NUM);
             _sleep(current_context, buffer[0]);
             scheduler(regs_address);
+            bkpt();
             break;
 
         case 3:    //TODO

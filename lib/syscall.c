@@ -1,23 +1,23 @@
 #include <syscall.h>
 #include <memory.h>
 #include <usrIO.h>
+#include "debug.h"
 
 int create_t(int* start_t, int arg_num, ...){
 
     int* ap = (int*) &arg_num + 1;
     int volatile buffer[] = {(int) start_t, arg_num, (int) ap};
-    //print_buffer(buffer, 3);
     __asm__("MOV r1, %0" : : "r"(buffer));
     __asm__("SWI #0");
     return 0;
 }
 
 void kill_t(){
-    //__asm__("MOV r1, %0" : : "r"(current_context));
     __asm__("SWI #1");
 }
 
 int sleep(int interval){
+    bkpt();   //TODO Optimization is causing problems on storing regs at beginning if function is not called
     int volatile buffer[] = {interval};
     __asm__("MOV r1, %0" : : "r"(buffer));
     __asm__("SWI #2");
