@@ -9,6 +9,7 @@ int init_tcb(void* address, int size){
     sleeping_head = 0;
     waiting_head = 0;
     empty_head = 0;
+    current_context = 0;
 
     TCB_array = address;
     TCB_size = size;
@@ -133,7 +134,11 @@ int create_idle(){
 
 void idle(){         //TODO use power saving mode for environment
     while (1){
-        //printfn("idle");
+        /*
+        unsigned int cpsr;
+        __asm__("mrs %0, cpsr" : "=r" (cpsr));
+        printfn("idle: %b", cpsr);
+        */
         for (int i = 0; i < 214748364; ++i) {}
     }
 }

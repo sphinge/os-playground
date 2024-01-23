@@ -9,13 +9,13 @@ char* tail;
 
 void repeater(char c){                //TODO test function
     for (int i = 0; i < 10; ++i) {
-        /*
-        char s[3];
+        char s[2];
         format("%c", s, c);
-        print(s, 2);
-        */
-        printfn("%c", c);
+        print(s, strlen(s));
         sleep(50000);
+        char x;
+        receive(&x);
+        print(&x, 1);
     }
     kill_t();
 }
@@ -33,7 +33,8 @@ int dbgu_handler(){  //uses ring buffer to save new input
             tail = buffer;
         }
     }
-    create_t(repeater, 1, *head);         //TODO test function
+
+    //create_t(repeater, 1, *head);         //TODO test function
     return 0;
 }
 
@@ -80,6 +81,17 @@ int print_string_DBGU(char* s, int length) {
     return 0;
 }
 
+int receive_DBGU(char* c){           //get first not read element from buffer
+    if(head == tail){return 1;}
+
+    tail ++;
+    if(tail >= buffer + BUFFER_SIZE){
+        tail = buffer;
+    }
+    *c = *tail;
+    return 0;
+}
+/*
 char receive_DBGU(){           //get first not read element from buffer
     while (head == tail){}
     tail ++;
@@ -88,7 +100,7 @@ char receive_DBGU(){           //get first not read element from buffer
     }
     return *tail;
 }
-
+*/
 void reset_Buffer_DBGU(){
     tail = head;
 }

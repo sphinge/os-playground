@@ -38,15 +38,21 @@ int isr_swi(int swi, int buffer[], int* regs_address){
 
         case 2:
             //print_buffer(current_context->regs, REGISTER_NUM);
-            save_context(current_context, regs_address);    //TODO context is not loaded correct
+            save_context(current_context, regs_address);
             //print_buffer(current_context->regs, REGISTER_NUM);
             _sleep(current_context, buffer[0]);
             scheduler(regs_address);
             bkpt();
             break;
 
-        case 3:    //TODO
+        case 3:
             print_string_DBGU((char *) buffer[0], buffer[1]);
+            break;
+
+        case 4:
+            save_context(current_context, regs_address);
+            _receive(current_context, (char *) buffer[0]);
+            scheduler(regs_address);
             break;
         default:
             printf("unknown SWI: %d", swi);
@@ -61,7 +67,6 @@ int isr_pa(){
 
 int isr_da(){
     printfn(">DA ISR<");
-    while (1){} //TODO
     return 0;
 }
 

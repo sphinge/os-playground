@@ -3,7 +3,7 @@
 #include <memory.h>
 
 //receive String until press Enter
-int receive_line(char str[], int max_input){
+int receive_line(char str[], int max_input){   //TODO invalid
     reset_Buffer_DBGU();
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
     int* check = (int*) (DBGU + DBGU_SR);
@@ -24,6 +24,6 @@ int receive_line(char str[], int max_input){
     return 0;
 }
 
-char receive_n() {
+char receive_n() {  //TODO
 
 }

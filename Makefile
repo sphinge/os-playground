@@ -35,7 +35,7 @@ OBJ += $(SRC_SYSTEM)scheduler.o $(SRC_SYSTEM)tcb.o $(SRC_SYSTEM)swi_util.o
 OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o $(SRC_DRIVER)aic.o
 OBJ += $(SRC_LIB)memory.o $(SRC_LIB)util.o $(SRC_LIB)print.o $(SRC_LIB)receive.o
 OBJ += $(SRC_LIB)syscall.o
-OBJ += $(SRC_LIB)debug.o
+OBJ += $(SRC_LIB)debug.o $(SRC_LIB)threads.o
 
 # Library export
 export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/

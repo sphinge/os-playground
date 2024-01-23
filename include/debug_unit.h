@@ -22,7 +22,7 @@ int disable_DBGU();
 void print_DBGU(char c);
 void print_pointer_DBGU(int* x);
 int print_string_DBGU(char* s, int length);
-char receive_DBGU();
+int receive_DBGU(char* c);
 void reset_Buffer_DBGU();
 
 #endif

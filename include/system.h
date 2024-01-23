@@ -70,6 +70,7 @@ void idle();
 int _create_t(int* start_t, int arg_num , int* args);
 int _kill_t(struct TCB* context);
 int _sleep(struct TCB* context, int interval);
+int _receive(struct TCB *context, char* c);
 //SCHEDULER.C
 int scheduler(int* regs_address);
 int pause_all(int* regs_address);

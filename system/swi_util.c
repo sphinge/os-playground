@@ -39,3 +39,30 @@ int _sleep(struct TCB* context, int interval){
     }
     return 0;
 }
+
+int _receive(struct TCB *context, char* c){
+    //printfn("recaive");
+    context->status = TASK_WAITING;
+    context->waiting_state = (int) c;
+
+    tcb_list_remove(context, &running_head);
+
+    if(waiting_head == 0){
+        tcb_list_insert(context,waiting_head, &waiting_head);
+    }
+    else if(waiting_head->waiting_state > context->waiting_state){
+        tcb_list_insert(context,waiting_head->prev, &waiting_head);
+        waiting_head = context;
+    }
+    else{
+        struct TCB* iter = waiting_head->next;
+        while (iter != waiting_head){
+            if(context->waiting_state < iter->next->waiting_state){
+                break;
+            }
+            iter = iter->next;
+        }
+        tcb_list_insert(context,iter->prev, &waiting_head);
+    }
+    return 0;
+}

@@ -1,39 +1,62 @@
 #include <system.h>
 #include <usrIO.h>
 #include <time.h>
-int wake_up(struct TCB* context);
+#include <debug_unit.h>
+
 int check_waiting();
+int check_sleeping();
 int print_list(struct TCB* list);
 
 int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 idle running
     check_waiting();
-    /*
-    printfn("-------------SCHEDULE-------------");
-    printfn("sys_time: %d, context: %x", system_time, current_context);
-    printfn("running:");
-    print_list(running_head);
-    printfn("sleeping: ");
-    print_list(sleeping_head);
-    */
+    check_sleeping();
+    if(0){
+        printfn("-------------SCHEDULE-------------");
+        printfn("sys_time: %d, context: %x", system_time, current_context);
+        print_list(running_head);
+        print_list(waiting_head);
+        print_list(sleeping_head);
+    }
+
+
+    if(current_context == 0){
+        current_context = &TCB_array[TCB_size];
+        run_thread(current_context, regs_address);
+        return 0;
+    }
 
     if(running_head == 0){
         current_context = &TCB_array[TCB_size];
     }
     else{
-        save_context(current_context, regs_address);
-        current_context->status = TASK_READY;
+        if(current_context != &TCB_array[TCB_size]){
+            save_context(current_context, regs_address);
+            current_context->status = TASK_READY;
+        }
         running_head = running_head->next;
-
-        if(current_context != running_head){printfn("");}
 
         current_context = running_head;
     }
-
     run_thread(current_context, regs_address);
     return 0;
 }
 
 int check_waiting(){
+    char c;
+
+    if(waiting_head == 0){return 0;}
+    if(receive_DBGU(&c) == 1){return 0;}
+
+    struct TCB* context = waiting_head;
+    tcb_list_remove(context, &waiting_head);
+    context->status = TASK_READY;
+    *((char*) context->waiting_state) = c;
+    context->waiting_state = 0;
+    tcb_list_insert(context,running_head, &running_head);
+    return 0;
+}
+
+int check_sleeping(){
     if(sleeping_head != 0){
         if(sleeping_head->waiting_state <= system_time){            //TODO maybe wakeup more than one at a time
             struct TCB* context = sleeping_head;
