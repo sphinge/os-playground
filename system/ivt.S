@@ -37,9 +37,6 @@ software_interrupt:   //SWI stays in SUPERVISOR because Usermode is not initiali
     ADD lr, lr, #4
     STMFD sp!, {lr}
 
-    SUB lr, lr, #8             //get intermediate value
-    LDR r0, [lr]
-    AND r0, r0, #0x00FFFFFF
     STMFD sp!, {r0-r1}    //save arguments
 
     BL change_SYSTEM  //save back sp, lr

@@ -1,47 +1,47 @@
 #include <syscall.h>
 #include "debug.h"
 
+int swi_call(int swi, int* buffer);
+
 int create_t(void* start_t, int arg_num, ...){
     bkpt();
     int* ap = (int*) &arg_num + 1;
-    int volatile buffer[] = {(int) start_t, arg_num, (int) ap};
-    __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("SWI #0");
+    int buffer[] = {(int) start_t, arg_num, (int) ap};
+    swi_call(0, buffer);
     return 0;
 }
 
 void kill_t(){
-    __asm__("SWI #1");
+    bkpt();
+    swi_call(1, 0);
 }
 
 int sleep(int interval){
-    bkpt();   //TODO Optimization is causing problems on storing regs at beginning if function is not called
-    int volatile buffer[] = {interval};
-    __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("SWI #2");
+    bkpt();
+    int buffer[] = {interval};
+    swi_call(2, buffer);
     return 0;
 }
 
 int print(char msg[], int length){
-    bkpt();  //TODO
-    int volatile buffer[] = {(volatile int) msg, length};
-    __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("SWI #3");
+    bkpt();
+    int buffer[] = {(int) msg, length};
+    swi_call(3, buffer);
     return 0;
 }
 int receive(char* c){
-    /*
-    bkpt();  //TODO
-    int volatile buffer[] = {(volatile int) c};
-
-    __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("SWI #2");
+    bkpt();
+    int buffer[] = {(int)c};
+    swi_call(4, buffer);
     return 0;
-     */
-    bkpt();   //TODO Optimization is causing problems on storing regs at beginning if function is not called
-    int volatile buffer[] = {(volatile int)c};
+}
+
+int swi_call(int swi, int* buffer){
+    bkpt();            //TODO Optimization is causing problems on storing regs at beginning if function is not called
     __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("SWI #4");
+    __asm__("MOV r0, %0" : : "r"(swi));
+    __asm__("SWI #0");
+
     return 0;
 }
 
