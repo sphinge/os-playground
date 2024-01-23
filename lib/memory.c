@@ -30,7 +30,7 @@ int memcmp (const void *str1, const void *str2, unsigned int count){
     }
     return 0;
 }
-
+/*
 void *memmove (void *dest, const void *src, unsigned int len){
     char *d = dest;
     const char *s = src;
@@ -46,6 +46,7 @@ void *memmove (void *dest, const void *src, unsigned int len){
     return dest;
 }
 
+ */
 void *memset (void *dest, int val, unsigned int len){
     unsigned char *ptr = dest;
     while (len-- > 0)

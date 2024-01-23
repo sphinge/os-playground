@@ -67,7 +67,7 @@ int create_idle();
 void idle();
 
 //SWI_UTIL.C
-int _create_t(int* start_t, int arg_num , int* args);
+int _create_t(void* start_t, int arg_num , int* args);
 int _kill_t(struct TCB* context);
 int _sleep(struct TCB* context, int interval);
 int _receive(struct TCB *context, char* c);

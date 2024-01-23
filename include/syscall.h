@@ -1,7 +1,7 @@
 #ifndef _SYSCALL_H
 #define _SYSCALL_H
 
-int create_t(int* start_t, int arg_num, ...);
+int create_t(void* start_t, int arg_num, ...);
 void kill_t();
 int sleep(int interval);
 int print(char msg[], int length);

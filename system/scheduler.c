@@ -63,7 +63,7 @@ int check_sleeping(){
             tcb_list_remove(context, &sleeping_head);
             context->status = TASK_READY;
             context->waiting_state = 0;
-            tcb_list_insert(context,running_head, &running_head);   //TODO starve running_head->prev
+            tcb_list_insert(context,running_head, &running_head);
         }
     }
     return 0;

@@ -7,19 +7,6 @@ char buffer[BUFFER_SIZE];
 char* head;
 char* tail;
 
-void repeater(char c){                //TODO test function
-    for (int i = 0; i < 10; ++i) {
-        char s[2];
-        format("%c", s, c);
-        print(s, strlen(s));
-        sleep(50000);
-        char x;
-        receive(&x);
-        print(&x, 1);
-    }
-    kill_t();
-}
-
 int dbgu_handler(){  //uses ring buffer to save new input
     volatile char* rhr = (char*) (DBGU + DBGU_RHR);
     head++;
@@ -33,8 +20,6 @@ int dbgu_handler(){  //uses ring buffer to save new input
             tail = buffer;
         }
     }
-
-    //create_t(repeater, 1, *head);         //TODO test function
     return 0;
 }
 

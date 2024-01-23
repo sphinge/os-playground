@@ -1,10 +1,8 @@
-#include <usrIO.h>
 #include <debug_unit.h>
 #include <util.h>
-#include <system.h>
+#include <usrIO.h>
 
 void print_TCB_State(struct TCB *tcb){
-
     State s = (*tcb).status;
     int id = (*tcb).id;
     char* msg = "T_ID: %d; Status: %s";
@@ -30,7 +28,7 @@ void print_TCB_State(struct TCB *tcb){
         printfn(msg, id, "ERROR");
     }
 }
-void print_TCB(struct TCB *tcb){
+void print_TCB(){
     for (int i = 0; i < TCB_size; i++) {
         print_TCB_State(&TCB_array[i]);
     }
@@ -106,4 +104,6 @@ int print_buffer(int* buffer, int length){
     }
     printf("%x", buffer[length]);
     printfn("]");
+
+    return 0;
 }

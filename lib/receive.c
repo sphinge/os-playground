@@ -25,5 +25,5 @@ int receive_line(char str[], int max_input){   //TODO invalid
 }
 
 char receive_n() {  //TODO
-
+    return 0;
 }

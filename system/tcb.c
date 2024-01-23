@@ -37,7 +37,7 @@ int save_context(struct TCB* tcb_thread, int* regs_address){
     return 0;
 }
 
-int run_thread(struct TCB* tcb_thread, int* regs_address){        //TODO use waiting_state in tcb struct (dont be confused :) fr)
+int run_thread(struct TCB* tcb_thread, int* regs_address){
     tcb_thread->status = TASK_RUNNING;
     memcpy(regs_address, tcb_thread->regs, REGISTER_NUM * 4);
     return 0;

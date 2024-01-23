@@ -1,7 +1,7 @@
 #include <syscall.h>
 #include "debug.h"
 
-int create_t(int* start_t, int arg_num, ...){
+int create_t(void* start_t, int arg_num, ...){
     bkpt();
     int* ap = (int*) &arg_num + 1;
     int volatile buffer[] = {(int) start_t, arg_num, (int) ap};

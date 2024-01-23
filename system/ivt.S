@@ -60,7 +60,7 @@ software_interrupt:   //SWI stays in SUPERVISOR because Usermode is not initiali
     MSR SPSR, r2
 
     BL change_SYSTEM  //save back sp, lr
-    MOV sp, r0        //TODO lr seems wrong restored
+    MOV sp, r0
     MOV lr, r1
     BL change_SUPERVISOR
 
