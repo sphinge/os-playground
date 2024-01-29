@@ -1,7 +1,5 @@
 #include <debug_unit.h>
-#include <usrIO.h>
 #include <util.h>
-#include <syscall.h>
 
 char buffer[BUFFER_SIZE];
 char* head;

@@ -1,6 +1,5 @@
 #include <time.h>
 #include <system.h>
-#include <usrIO.h>
 
 int init_PIT(){
     system_time = 0;

@@ -87,4 +87,20 @@ void change_UNDEFINED();
 void change_SYSTEM();
 void change_USER();
 void change_SUPERVISOR();
+
+//-----------------------SYSIO-----------------------
+
+#define ENTER 0x0000000D
+
+//PRINT.C
+int _printf(char msg[], int* argv);
+int printf(char msg[], ...);
+int printfn(char msg[], ...);
+int print_buffer(int* buffer, int length);
+void print_TCB_State(struct TCB *tcb);
+void print_TCB();
+
+//RECEIVE.C
+int receive_line(char str[], int max_input);
+char receive_char();
 #endif /* _SYSTEM_H_ */
