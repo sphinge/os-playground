@@ -1,5 +1,28 @@
-#include <syscall.h>
-#include "debug.h"
+# 1 "lib/syscall.c"
+# 1 "/home/mi/martis61/Dokumente/Bs/moinsenos//"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "lib/syscall.c"
+# 1 "include/syscall.h" 1
+
+
+
+int create_t(void* start_t, int arg_num, ...);
+void kill_t();
+int sleep(int interval);
+int print(char msg[], int length);
+int receive(char* c);
+
+
+
+int swi_call(int swi, int* buffer);
+# 2 "lib/syscall.c" 2
+# 1 "include/debug.h" 1
+
+
+
+void bkpt();
+# 3 "lib/syscall.c" 2
 
 int create_t(void* start_t, int arg_num, ...){
     int* ap = (int*) &arg_num + 1;
@@ -29,13 +52,3 @@ int receive(char* c){
     swi_call(4, buffer);
     return 0;
 }
-
-/*
-__asm__("SWI #5"); -> create lock -> int 4000 return
-
-__asm__("SWI #6");  -> lock(4000) -> lock
-
-__asm__("SWI #7");  -> unlock(4000) -> unlock
-
-__asm__("SWI #8");  -> delete(4000) -> delete
-*/

@@ -63,7 +63,7 @@ build: kernel
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $< 
 
 %.o: %.c                                          #-save-temps
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $< -save-temps
 kernel: $(LSCRIPT) $(OBJ)
 	$(LD) -T$(LSCRIPT) -o $@ $(OBJ) $(LIBGCC)
 

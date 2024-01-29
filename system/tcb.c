@@ -1,5 +1,6 @@
 #include <system.h>
 #include <memory.h>
+#include "syscall.h"
 
 int tid_counter = 0;
 
@@ -66,7 +67,7 @@ int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_a
     tcb->stack_base = stack_address;
 
     tcb->regs[0] = stack_address;      //set stack pointer
-    //tcb->regs[1] = (int) kill_t; //TODO
+    tcb->regs[1] = (int) kill_t; //TODO
     tcb->regs[2] = 0b10000;        //Set CPSR to USER
     tcb->regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
 
@@ -121,7 +122,7 @@ int create_idle(){
     tcb.id = -2;
 
     tcb.regs[0] = stack_pointer;              //set stack pointer
-    //tcb.regs[1] = (int) kill_t;             //TODO
+    tcb.regs[1] = 0;                          //LR never reached
     tcb.regs[2] = 0b10000;                    //Set CPSR to USER
     tcb.regs[3] = (int) (idle + 4);           //Set PC EXPECT TO BE LOADED FROM IRQ Routine
 

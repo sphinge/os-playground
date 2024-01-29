@@ -21,6 +21,7 @@ int isr_reset(){
 
 int isr_ui(){
     printfn(">UI ISR<");
+    while(1){}
     return 0;
 }
 

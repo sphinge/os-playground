@@ -2,6 +2,8 @@
 #include "util.h"
 #include <threads.h>
 
+void empty();
+
 void receiver(){
     char c[] = "hallo";
     while (1){
@@ -9,6 +11,8 @@ void receiver(){
         create_t(rec_print, 1, c[0]);
     }
 }
+
+void empty(){}
 
 void rec_print(char c){
     char s[2];
