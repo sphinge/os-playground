@@ -7,6 +7,12 @@
 .set UNDEFINED_MODE,   0b11011
 .set SYSTEM_MODE,      0b11111
 
+.set FIQ_ADDRESS,         0x230A0000
+.set IRQ_ADDRESS,         0x23090000
+.set ABORT_ADDRESS,       0x23080000
+.set UNDEFINED_ADDRESS,   0x23070000
+.set SYSTEM_ADDRESS,      0x23060000
+
 .section .text
 .global init_stack
 
@@ -21,11 +27,11 @@
 init_stack:
     STMFD sp!, {r0-r12, lr}
 
-    set_stack FIQ_MODE 0x230A0000            //TODO sp as define on Top
-    set_stack IRQ_MODE 0x23090000
-    set_stack ABORT_MODE 0x23080000
-    set_stack UNDEFINED_MODE 0x23070000
-    set_stack SYSTEM_MODE 0x23060000
+    set_stack FIQ_MODE FIQ_ADDRESS
+    set_stack IRQ_MODE IRQ_ADDRESS
+    set_stack ABORT_MODE ABORT_ADDRESS
+    set_stack UNDEFINED_MODE UNDEFINED_ADDRESS
+    set_stack SYSTEM_MODE SYSTEM_ADDRESS
 
     bl change_SUPERVISOR
 

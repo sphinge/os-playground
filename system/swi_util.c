@@ -6,7 +6,7 @@ int _create_t(void* start_t, int arg_num , int* args){
     return 0;
 }
 
-int _kill_t(struct TCB* context){       //TODO
+int _kill_t(struct TCB* context){
     tcb_list_remove(context, &running_head);
     context->status = TASK_TERMINATED;
     tcb_list_insert(context, empty_head, &empty_head);
