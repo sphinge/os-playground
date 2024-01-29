@@ -54,6 +54,7 @@ struct TCB* empty_head;
 struct TCB* current_context;
 
 struct TCB* TCB_array;
+struct TCB* idle_thread;
 int TCB_size;
 
 int init_tcb(void* address, int size);

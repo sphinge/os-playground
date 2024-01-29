@@ -19,16 +19,16 @@ int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 id
 
 
     if(current_context == 0){
-        current_context = &TCB_array[TCB_size];
+        current_context = idle_thread;
         run_thread(current_context, regs_address);
         return 0;
     }
 
     if(running_head == 0){
-        current_context = &TCB_array[TCB_size];
+        current_context = idle_thread;
     }
     else{
-        if(current_context != &TCB_array[TCB_size]){
+        if(current_context != idle_thread){
             save_context(current_context, regs_address);
             current_context->status = TASK_READY;
         }

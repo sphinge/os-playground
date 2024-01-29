@@ -24,9 +24,8 @@ int init_tcb(void* address, int size){
     TCB_array[0].prev = &TCB_array[TCB_size-1];
     TCB_array[TCB_size-1].next = &TCB_array[0];
     empty_head = TCB_array;
-    create_idle();        //TODO mov idle to first pos
-    current_context = &TCB_array[TCB_size];
-    printfn("last address: %x", &TCB_array[TCB_size] + sizeof(struct TCB));
+    create_idle();
+    current_context = idle_thread;
     return 0;
 }
 
@@ -67,7 +66,7 @@ int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_a
     tcb->stack_base = stack_address;
 
     tcb->regs[0] = stack_address;      //set stack pointer
-    //tcb->regs[1] = (int) _kill_t; //TODO
+    //tcb->regs[1] = (int) kill_t; //TODO
     tcb->regs[2] = 0b10000;        //Set CPSR to USER
     tcb->regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
 
@@ -122,12 +121,13 @@ int create_idle(){
     tcb.id = -2;
 
     tcb.regs[0] = stack_pointer;              //set stack pointer
-    //tcb.regs[1] = (int) _kill_t;             //TODO
+    //tcb.regs[1] = (int) kill_t;             //TODO
     tcb.regs[2] = 0b10000;                    //Set CPSR to USER
     tcb.regs[3] = (int) (idle + 4);           //Set PC EXPECT TO BE LOADED FROM IRQ Routine
 
     tcb.status = TASK_IDLE;
-    memcpy(&TCB_array[TCB_size], &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
+    idle_thread = TCB_array-sizeof(struct TCB);
+    memcpy(idle_thread, &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
     return 0;
 }
 
