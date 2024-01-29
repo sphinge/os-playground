@@ -1,5 +1,4 @@
 #include <syscall.h>
-#include "debug.h"
 
 int create_t(void* start_t, int arg_num, ...){
     int* ap = (int*) &arg_num + 1;

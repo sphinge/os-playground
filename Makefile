@@ -54,16 +54,16 @@ DEP = $(OBJ:.o=.d)
 #
 # Regeln
 #
-.PHONY: build 
+.PHONY: build
 build: kernel
 
 -include $(DEP)
 
 %.o: %.S
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $< 
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<
 
 %.o: %.c                                          #-save-temps
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $< -save-temps
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MMD -MP -o $@ -c $<
 kernel: $(LSCRIPT) $(OBJ)
 	$(LD) -T$(LSCRIPT) -o $@ $(OBJ) $(LIBGCC)
 
@@ -93,7 +93,7 @@ clean_selected:
 run: kernel
 	$(LINNERT)/qemu-bsprak -kernel kernel
 
-run-debug: kernel #clean_selected 
+run-debug: kernel #clean_selected
 	$(LINNERT)/qemu-bsprak -S -s -kernel kernel
 
 debugger: kernel
@@ -103,4 +103,4 @@ debugger: kernel
 clean_build_run: clean build run
 
 .PHONY: clean_run
-clean_run: clean build clean_selected run 
+clean_run: clean build clean_selected run

@@ -1,8 +1,7 @@
 #include <syscall.h>
 #include "util.h"
+#include "debug.h"
 #include <threads.h>
-
-void empty();
 
 void receiver(){
     char c[] = "hallo";
@@ -11,8 +10,6 @@ void receiver(){
         create_t(rec_print, 1, c[0]);
     }
 }
-
-void empty(){}
 
 void rec_print(char c){
     char s[2];
