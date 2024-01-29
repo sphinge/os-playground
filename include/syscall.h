@@ -9,4 +9,6 @@ int receive(char* c);
 //int receive_line(char str[], int max_input);
 //int receive_n(char str[], int n_chars);
 
+int swi_call(int swi, int* buffer);
+
 #endif //BS_SYSCALL_H

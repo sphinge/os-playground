@@ -34,7 +34,7 @@ OBJ += $(SRC_SYSTEM)stack.o $(SRC_SYSTEM)cpu.o
 OBJ += $(SRC_SYSTEM)scheduler.o $(SRC_SYSTEM)tcb.o $(SRC_SYSTEM)swi_util.o
 OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o $(SRC_DRIVER)aic.o
 OBJ += $(SRC_LIB)memory.o $(SRC_LIB)util.o $(SRC_LIB)print.o $(SRC_LIB)receive.o
-OBJ += $(SRC_LIB)syscall.o
+OBJ += $(SRC_LIB)syscall.o $(SRC_LIB)swi.o
 OBJ += $(SRC_LIB)debug.o $(SRC_LIB)threads.o
 
 # Library export

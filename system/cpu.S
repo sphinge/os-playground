@@ -26,6 +26,8 @@
     MOV PC, r5
 .endm
 
+
+
 enable_interrupts:
     STMFD sp!, {r0-r12, lr}   //TODO Test + maybe just STMFD sp!, {r1, lr}
     MRS r0, CPSR

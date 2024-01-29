@@ -1,8 +1,6 @@
 #include <syscall.h>
 #include "debug.h"
 
-int swi_call(int swi, int* buffer);
-
 int create_t(void* start_t, int arg_num, ...){
     bkpt();
     int* ap = (int*) &arg_num + 1;
@@ -35,16 +33,6 @@ int receive(char* c){
     swi_call(4, buffer);
     return 0;
 }
-
-int swi_call(int swi, int* buffer){
-    bkpt();            //TODO Optimization is causing problems on storing regs at beginning if function is not called
-    __asm__("MOV r1, %0" : : "r"(buffer));
-    __asm__("MOV r0, %0" : : "r"(swi));
-    __asm__("SWI #0");
-
-    return 0;
-}
-
 
 /*
 __asm__("SWI #5"); -> create lock -> int 4000 return
