@@ -1,6 +1,6 @@
 #include <system.h>
 #include <debug_unit.h>
-#include <memory.h>
+#include <util.h>
 
 //receive String until press Enter
 int receive_line(char str[], int max_input){   //TODO invalid

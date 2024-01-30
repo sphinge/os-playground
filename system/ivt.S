@@ -28,9 +28,31 @@ reset:
     bl isr_reset              //start isr_reset
 
 undefined_instruction:
-    STMFD sp!, {r0-r12, lr}
-    bl isr_ui                 //start isr_ui
-    LDMFD sp!, {r0-r12, pc}^
+    STMFD sp!, {r0-r12}    //save context
+    ADD lr, lr, #4
+    STMFD sp!, {lr}
+
+    BL change_SYSTEM  //save back sp, lr
+    MOV r0, sp
+    MOV r1, lr
+    BL change_UNDEFINED
+
+    MRS r2, SPSR
+    STMFD sp!, {r0-r2}
+
+    BL isr_ui     //start handler
+
+    LDMFD sp!, {r0-r2}
+    MSR SPSR, r2
+
+    BL change_SYSTEM  //save back sp, lr
+    MOV sp, r0
+    MOV lr, r1
+    BL change_UNDEFINED
+
+    LDMFD sp!, {lr}
+    LDMFD sp!, {r0-r12}
+    SUBS pc, lr, #4
 
 software_interrupt:   //SWI stays in SUPERVISOR because Usermode is not initialized!
     STMFD sp!, {r0-r12}    //save context
@@ -77,9 +99,28 @@ data_abort:
     SUBS pc, lr, #4
 
 fiq:
-    STMFD sp!, {r0-r7, lr}
-    bl isr_fiq                  //start isr_fiq
-    LDMFD sp!, {r0-r7, lr}
+    STMFD sp!, {r0-r12}   //save context
+    STMFD sp!, {lr}
+    bl change_SYSTEM  //save back sp, lr
+    MOV r0, sp
+    MOV r1, lr
+    bl change_FIQ
+
+    MRS r2, SPSR
+    STMFD sp!, {r0-r2}
+
+    MOV r0, sp
+    BL isr_fiq     //start handler
+    LDMFD sp!, {r0-r2}
+    MSR SPSR, r2
+
+    bl change_SYSTEM  //save back sp, lr
+    MOV sp, r0
+    MOV lr, r1
+    bl change_FIQ
+
+    LDMFD sp!, {lr}
+    LDMFD sp!, {r0-r12}
     SUBS pc, lr, #4
 
 s1_irq:

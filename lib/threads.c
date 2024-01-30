@@ -1,6 +1,5 @@
 #include <syscall.h>
 #include "util.h"
-#include "debug.h"
 #include <threads.h>
 
 void receiver(){

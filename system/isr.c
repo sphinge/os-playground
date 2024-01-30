@@ -1,5 +1,5 @@
 #include <system.h>
-#include <memory.h>
+#include <util.h>
 #include <debug_unit.h>
 #include <time.h>
 #include <aic.h>

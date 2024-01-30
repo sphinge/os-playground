@@ -1,6 +1,6 @@
 #include <system.h>
-#include <memory.h>
-#include "syscall.h"
+#include <util.h>
+#include <syscall.h>
 
 int tid_counter = 0;
 
@@ -31,7 +31,6 @@ int init_tcb(void* address, int size){
 }
 
 int save_context(struct TCB* tcb_thread, int* regs_address){
-    //printfn("Context:%x", tcb_thread->regs);
     memcpy(tcb_thread->regs, regs_address, REGISTER_NUM * 4);
     return 0;
 }
@@ -67,7 +66,7 @@ int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_a
     tcb->stack_base = stack_address;
 
     tcb->regs[0] = stack_address;      //set stack pointer
-    tcb->regs[1] = (int) kill_t; //TODO
+    tcb->regs[1] = (int) kill_t;    //TODO
     tcb->regs[2] = 0b10000;        //Set CPSR to USER
     tcb->regs[3] = start_t + 4;    //Set PC  EXPECT TO BE LOADED FROM IRQ Routine
 
@@ -118,7 +117,6 @@ int tcb_list_insert(struct TCB* tcb, struct TCB* tcb_after, struct TCB** list_he
 int create_idle(){
     int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * TCB_size);
     struct TCB tcb = { -2,0, {0},TASK_TERMINATED, 0, 0, 0, 0};
-
     tcb.id = -2;
 
     tcb.regs[0] = stack_pointer;              //set stack pointer

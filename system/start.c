@@ -22,7 +22,6 @@ int main() {
 
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
-    printfn("%x", kill_t);
 
     idle();
     return 0;
