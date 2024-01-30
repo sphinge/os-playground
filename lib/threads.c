@@ -2,6 +2,13 @@
 #include "util.h"
 #include <threads.h>
 
+void mmu_test(){
+
+    while (1){
+
+    }
+}
+
 void receiver(){
     char c[] = "hallo";
     while (1){

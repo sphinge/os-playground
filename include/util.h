@@ -14,10 +14,6 @@ typedef struct circular_buffer
     void *tail;       // pointer to tail
 } circular_buffer;
 
-void cb_init(circular_buffer *cb, unsigned int capacity, unsigned int sz, void* address);
-void cb_push_back(circular_buffer *cb, const void *item);
-int cb_pop_front(circular_buffer *cb, void *item);
-
 char* uint_to_hex(int num, char* hex);
 char* int_to_decimal(int num, char* str);
 int strlen(const char *str);

@@ -4,7 +4,7 @@
 #include <stack.h>
 #include <time.h>
 #include <aic.h>
-#include "debug.h"
+#include <memory.h>
 
 #include <threads.h>
 
@@ -18,7 +18,11 @@ int main() {
     init_AIC();
     init_tcb((int *) 0x23000000,20);
 
-    create_t(receiver, 0);
+    printfn("%x", *((int*)0x0));
+    init_mmu();
+    printfn("%x", *((int*)0x0));
+
+    create_t(mmu_test, 0);
 
     init_PIT();       //periodic interrupt timer
     init_DBGU_Interrupt();
