@@ -10,21 +10,21 @@
 
 # How to use:
 
- **make build**	-- Baut den Kernel.
+ `make build`	-- Baut den Kernel.
 
- **make clean**	-- Löscht alle erzeugten Dateien.
+ `make clean`	-- Löscht alle erzeugten Dateien.
 
- **make clean_selected**   --Löscht alle dateien, bis auf kernel
+ `make clean_selected`   --Löscht alle dateien, bis auf kernel
 
- **make run**   -- Führt qemu aus.
+ `make run`   -- Führt qemu aus.
 
- **make run-debug**   -- Führt qemu aus, wartet auf GDB.
+ `make run-debug`   -- Führt qemu aus, wartet auf GDB.
 
- **make debugger**   -- Führt GDB aus.
+ `make debugger`   -- Führt GDB aus.
 
- **make clean_build_run**    -- Führt clean, build und run hintereinander aus.
+ `make clean_build_run`    -- Führt clean, build und run hintereinander aus.
  
- __make clean_run__    -- Führt clean, build, clean_selected und run hintereinander aus.    **>>Empfohlen<<**
+ `make clean_run`    -- Führt clean, build, clean_selected und run hintereinander aus.    **>>Empfohlen<<**
 #
 
 ## Beenden:
