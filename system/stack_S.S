@@ -4,8 +4,8 @@
 
 set_stack:
     STMFD sp!, {r0-r12, lr}
-    MRS r2, CPSR
 
+    MRS r2, CPSR
     BIC r3, r2, #0x1F     //set the last 5 Bits to 0
     ORR r3, r3, r0        //set mode
     MSR CPSR, r3

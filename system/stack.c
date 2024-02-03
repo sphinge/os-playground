@@ -1,7 +1,6 @@
 #include <system.h>
 #include <memconfig.h>
 
-
 void init_stacks(){
     set_stack(FIQ_MODE, FIQ_ADDRESS);
     set_stack(IRQ_MODE, IRQ_ADDRESS);

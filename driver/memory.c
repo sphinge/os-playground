@@ -3,7 +3,7 @@
 #include <system.h>
 #include <memconfig.h>
 
-enum mmu_permission {
+enum mmu_permission {   //TODO not this names
     PERM_KERNEL_READ	= 0,
     PERM_KERNEL_READ_WRITE	= 1,
     PERM_USER_READ		= 2,
@@ -22,7 +22,7 @@ int init_mmu(){
 }
 
 int section_descriptor(int physical_address, int domain, int ap, int c, int b){
-    return (physical_address << 20) | (ap << 10) | (domain << 5) | (c << 3) | (b <<2) | 0b10010;
+    return (physical_address) | (ap << 10) | (domain << 5) | (c << 3) | (b <<2) | 0b10010;
 }
 
 int create_l1_table(int* l1_table_address){
