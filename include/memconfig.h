@@ -1,0 +1,18 @@
+#ifndef _MEMCONFIG_H
+#define _MEMCONFIG_H
+
+#define SRAM_ADDRESS 0x200000
+
+#define TCB_ADDRESS         0x23000000
+#define TCB_SIZE            20
+#define TCB_STACK_ADDRESS   0x23030000
+#define TCB_STACK_SPACE     0x00010000
+
+
+#define FIQ_ADDRESS         0x23A00000
+#define IRQ_ADDRESS         0x23A10000
+#define ABORT_ADDRESS       0x23A20000
+#define UNDEFINED_ADDRESS   0x23A30000
+#define SYSTEM_ADDRESS      0x23A40000
+
+#endif

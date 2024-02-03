@@ -1,6 +1,7 @@
 #include <system.h>
 #include <util.h>
 #include <syscall.h>
+#include <memconfig.h>
 
 
 int tid_counter = 0;
@@ -19,7 +20,7 @@ int init_tcb(void* address, int size){
 
     for (int i = 0; i < TCB_size; i++) {
         memcpy(&TCB_array[i], &empty, sizeof(struct TCB));
-        TCB_array[i].stack_base = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * i);
+        TCB_array[i].stack_base = TCB_STACK_ADDRESS + (TCB_STACK_SPACE * i);
         TCB_array[i].next = &TCB_array[i+1];
         TCB_array[i].prev = &TCB_array[i-1];
     }

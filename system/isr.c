@@ -3,6 +3,7 @@
 #include <debug_unit.h>
 #include <time.h>
 #include <aic.h>
+#include <memconfig.h>
 #include "debug.h"
 
 int init_ISR(){
@@ -15,6 +16,7 @@ int init_ISR(){
 
 int isr_reset(){
     printfn(">RESET ISR<");
+    while (1){}
     //sleep(20000);
     return 0;
 }
@@ -62,16 +64,19 @@ int isr_swi(int swi, int buffer[], int* regs_address){
 
 int isr_pa(){
     printfn(">PA ISR<");
+    while(1){}
     return 0;
 }
 
 int isr_da(){
     printfn(">DA ISR<");
+    while(1){}
     return 0;
 }
 
 int isr_fiq(){
     printfn(">FIQ ISR<");
+    while(1){}
     return 0;
 }
 

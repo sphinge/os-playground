@@ -3,11 +3,17 @@
 
 #define MC 0xFFFFFF00   //Memory Controller
 #define MC_RCR 0x00     //Remap Command Register
-#define SRAM_ADDRESS 0x200000
-
-#define TCB_STACK_ADDRESS   0x23030000
-#define TCB_STACK_SPACE     0x00010000
 #define REGISTER_NUM        17
+
+typedef enum{
+    USER_MODE        =0b10000,
+    FIQ_MODE         =0b10001,
+    IRQ_MODE         =0b10010,
+    SUPERVISOR_MODE  =0b10011,
+    ABORT_MODE       =0b10111,
+    UNDEFINED_MODE   =0b11011,
+    SYSTEM_MODE      =0b11111
+} modes;
 
 typedef enum{
     TASK_NEW,
@@ -88,6 +94,11 @@ void change_UNDEFINED();
 void change_SYSTEM();
 void change_USER();
 void change_SUPERVISOR();
+
+//-----------------------STACK-----------------------
+void init_stacks();
+void set_stack(int mode, int address);
+int get_stack(int mode);
 
 //-----------------------SYSIO-----------------------
 
