@@ -1,11 +1,7 @@
 #include <memory.h>
 #include <debug.h>
 #include <system.h>
-
-#define L1_TABLE_SIZE 4096
-#define L1_TABLE_BASE 0x21030000 //TODO
-
-#define KERNEL_CODE_ADDRESS 0x20000000
+#include <memconfig.h>
 
 enum mmu_permission {
     PERM_KERNEL_READ	= 0,
@@ -14,13 +10,11 @@ enum mmu_permission {
     FULL_ACCESS	= 3,
 };
 
-
-
 int init_mmu(){
     create_l1_table((int *) L1_TABLE_BASE);
+    set_domain_access(1);
     set_ttb((int *) L1_TABLE_BASE);
     printfn("yay");
-    bkpt();
     enable_mmu();
     printfn("yay 2");
     bkpt();
@@ -35,15 +29,15 @@ int create_l1_table(int* l1_table_address){
     for(int i = 0; i < L1_TABLE_SIZE; i++){
         l1_table_address[i] = 0;
     }
-    l1_table_address[0] = section_descriptor(KERNEL_CODE_ADDRESS, 0, FULL_ACCESS, 0,0);
-    return 0;
-}
 
-int memory_delay(int save){
-    for (int i = 0; i < 47483647; ++i) {
-        i = i;
-    }
-    return save;
+    l1_table_address[0] = section_descriptor(KERNEL_CODE_ADDRESS, 0, FULL_ACCESS, 0,0);
+    l1_table_address[KERNEL_CODE_ADDRESS >> 20] = section_descriptor(KERNEL_CODE_ADDRESS, 0, FULL_ACCESS, 0,0);
+    l1_table_address[KERNEL_DATA_ADDRESS >> 20] = section_descriptor(KERNEL_DATA_ADDRESS, 0, FULL_ACCESS, 0,0);
+
+    l1_table_address[STACK_BASE >> 20] = section_descriptor(STACK_BASE, 0, FULL_ACCESS, 0,0);
+    l1_table_address[DRIVER_ADDRESS >> 20] = section_descriptor(DRIVER_ADDRESS, 0, FULL_ACCESS, 0,0);
+
+    return 0;
 }
 
 

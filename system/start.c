@@ -13,7 +13,7 @@ int main() {
     char msg1[] = "MoinsenOS";
     printfn(msg1);
 
-    //init_mmu();
+    init_mmu();
     printfn("mmu returned yay");
 
     init_ISR();
