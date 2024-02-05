@@ -2,7 +2,8 @@
 #include <time.h>
 
 int _create_t(void* start_t, int arg_num , int* args){
-    tcb_insert((int)start_t, arg_num, args);
+    int table_address = 0;
+    tcb_insert((int) table_address, (int)start_t, arg_num, args);
     return 0;
 }
 

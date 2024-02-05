@@ -2,7 +2,7 @@
 
 .global _start
 _start: 
-        ldr     sp, =0x24000000
+        ldr     sp, =0x23FFFFFF
         bl      main
 .Lend:  
         b       .Lend

@@ -1,6 +1,6 @@
-#include <syscall.h>
+#include "syscall.h"
 #include "util.h"
-#include <threads.h>
+#include "threads.h"
 
 void mmu_test(){
 

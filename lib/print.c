@@ -107,3 +107,12 @@ int print_buffer(int* buffer, int length){
 
     return 0;
 }
+
+int print_regs(int* address){
+    printfn(" SP: %x  LR: %x  CPSR: %x   PC: %x", address[0], address[1], address[2], address[3]);
+    printfn(" R0: %x  R1: %x    R2: %x   R3: %x", address[4], address[5], address[6], address[7]);
+    printfn(" R4: %x  R5: %x    R6: %x   R7: %x", address[8], address[9], address[10], address[11]);
+    printfn(" R8: %x  R9: %x   R10: %x  R11: %x", address[12], address[13], address[14], address[15]);
+    printfn("R12: %x", address[16]);
+    return 0;
+}

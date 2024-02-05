@@ -1,6 +1,7 @@
 #include <system.h>
 #include <time.h>
 #include <debug_unit.h>
+#include <debug.h>
 
 int check_waiting();
 int check_sleeping();
@@ -8,6 +9,7 @@ int print_list(struct TCB* list);
 
 int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 idle running
     check_waiting();
+    bkpt();
     check_sleeping();
     if(0){
         printfn("-------------SCHEDULE-------------");
@@ -20,6 +22,7 @@ int scheduler(int* regs_address){       //Return 0 normal thread scheduled; 1 id
 
     if(current_context == 0){
         current_context = idle_thread;
+        bkpt();
         run_thread(current_context, regs_address);
         return 0;
     }

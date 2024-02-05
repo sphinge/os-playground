@@ -10,7 +10,7 @@ int init_ISR(){
     int ivt_size = ivt_end-ivt_start;
     memcpy((void*) SRAM_ADDRESS, ivt_start, ivt_size);      //memcopy asm to sram
     volatile int* rcr = (int*) MC + MC_RCR;  //Remap 
-    *rcr = 1;                                //Remap Command Register enable
+    *rcr = 1;//Remap Command Register enable
     return 0;
 }
 
@@ -68,8 +68,9 @@ int isr_pa(){
     return 0;
 }
 
-int isr_da(){
-    printfn(">DA ISR<");
+int isr_da(int* stack_address){
+    printfn(">DA ISR< %x", stack_address);
+    print_regs(stack_address);
     while(1){}
     return 0;
 }

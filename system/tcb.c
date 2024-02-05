@@ -16,17 +16,17 @@ int init_tcb(void* address, int size){
     TCB_array = address;
     TCB_size = size;
 
-    struct TCB empty = {-1, 0,{0},TASK_TERMINATED, 0, 0, 0, 0};
+    struct TCB empty = {-1, 0,  0/*TODO*/,{0},TASK_TERMINATED, 0, 0, 0, 0};
 
-    for (int i = 0; i < TCB_size; i++) {
+    for (int i = 1; i < TCB_size; i++) {
         memcpy(&TCB_array[i], &empty, sizeof(struct TCB));
-        TCB_array[i].stack_base = TCB_STACK_ADDRESS + (TCB_STACK_SPACE * i);
+        TCB_array[i].stack_base = USER_STACK_ADDRESS + (USER_STACK_SPACE * i);
         TCB_array[i].next = &TCB_array[i+1];
         TCB_array[i].prev = &TCB_array[i-1];
     }
-    TCB_array[0].prev = &TCB_array[TCB_size-1];
-    TCB_array[TCB_size-1].next = &TCB_array[0];
-    empty_head = TCB_array;
+    TCB_array[1].prev = &TCB_array[TCB_size-1];
+    TCB_array[TCB_size-1].next = &TCB_array[1];
+    empty_head = &TCB_array[1];
     create_idle();
     current_context = idle_thread;
     return 0;
@@ -43,7 +43,7 @@ int run_thread(struct TCB* tcb_thread, int* regs_address){
     return 0;
 }
 
-int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
+int tcb_insert(int table_address, int start_t, int arg_num, int* args){         //Thread init  if 0 everything is good, if -1 no space for new thread
 
     if(empty_head == 0) {
         return 1;
@@ -53,7 +53,7 @@ int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0
 
     tcb_list_remove(tcb_address, &empty_head);
 
-    create_tcb(&tcb, start_t, arg_num, args, tcb_address->stack_base);
+    create_tcb(&tcb, table_address, start_t, arg_num, args, tcb_address->stack_base);
     memcpy(tcb_address, &tcb, sizeof(struct TCB));
     tid_counter ++;
 
@@ -61,11 +61,12 @@ int tcb_insert(int start_t, int arg_num, int* args){         //Thread init  if 0
     return 0;
 }
 
-int create_tcb(struct TCB *tcb, int start_t, int arg_num, int* args, int stack_address){
+int create_tcb(struct TCB *tcb, int table_address, int start_t, int arg_num, int* args, int stack_address){
     tcb->id = tid_counter;
     tcb->status = TASK_NEW;
     tcb->waiting_state = 0;
     tcb->stack_base = stack_address;
+    tcb->table_base = table_address;
 
     tcb->regs[0] = stack_address;      //set stack pointer
     tcb->regs[1] = (int) kill_t;    //TODO
@@ -117,8 +118,8 @@ int tcb_list_insert(struct TCB* tcb, struct TCB* tcb_after, struct TCB** list_he
 }
 
 int create_idle(){
-    int stack_pointer = TCB_STACK_ADDRESS - (TCB_STACK_SPACE * TCB_size);
-    struct TCB tcb = { -2,0, {0},TASK_TERMINATED, 0, 0, 0, 0};
+    int stack_pointer = USER_STACK_ADDRESS;
+    struct TCB tcb = { -2,0, 0/*TODO*/, {0},TASK_TERMINATED, 0, 0, 0, 0};
     tcb.id = -2;
 
     tcb.regs[0] = stack_pointer;              //set stack pointer
@@ -127,7 +128,7 @@ int create_idle(){
     tcb.regs[3] = (int) (idle + 4);           //Set PC EXPECT TO BE LOADED FROM IRQ Routine
 
     tcb.status = TASK_IDLE;
-    idle_thread = TCB_array-sizeof(struct TCB);
+    idle_thread = (struct TCB *) TCB_ADDRESS;
     memcpy(idle_thread, &tcb, sizeof(struct TCB));           //TCB_array[i] = tcb;
     return 0;
 }
@@ -139,6 +140,7 @@ void idle(){         //TODO use power saving mode for environment
         __asm__("mrs %0, cpsr" : "=r" (cpsr));
         printfn("idle: %b", cpsr);
         */
+        //printfn("idle");
         for (int i = 0; i < 214748364; ++i) {}
     }
 }

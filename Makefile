@@ -22,20 +22,25 @@
 SRC_DRIVER = driver/
 SRC_SYSTEM = system/
 SRC_LIB = lib/
+SRC_USR = user/
 
 LINNERT = /home/mi/linnert/arm/bin
 #
 # Quellen
 #
+#KERNEL CODE
 LSCRIPT = kernel.lds
 OBJ = $(SRC_SYSTEM)entry.o $(SRC_SYSTEM)start.o 
 OBJ += $(SRC_SYSTEM)isr.o $(SRC_SYSTEM)ivt.o 
 OBJ += $(SRC_SYSTEM)stack.o $(SRC_SYSTEM)stack_S.o $(SRC_SYSTEM)cpu.o
 OBJ += $(SRC_SYSTEM)scheduler.o $(SRC_SYSTEM)tcb.o $(SRC_SYSTEM)swi_util.o
-OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o $(SRC_DRIVER)aic.o $(SRC_DRIVER)memory.o $(SRC_DRIVER)mmu.o
+OBJ += $(SRC_SYSTEM)memory.o $(SRC_SYSTEM)mmu.o
+OBJ += $(SRC_DRIVER)debug_unit.o $(SRC_DRIVER)time.o $(SRC_DRIVER)aic.o
 OBJ += $(SRC_LIB)util.o $(SRC_LIB)print.o $(SRC_LIB)receive.o
-OBJ += $(SRC_LIB)syscall.o $(SRC_LIB)swi.o
-OBJ += $(SRC_LIB)debug.o $(SRC_LIB)threads.o
+OBJ += $(SRC_LIB)debug.o
+
+#USER CODE
+OBJ += $(SRC_USR)syscall.o $(SRC_USR)swi.o $(SRC_USR)threads.o
 
 # Library export
 export LD_LIBRARY_PATH=/usr/local/lib:/import/sage-7.4/local/lib/

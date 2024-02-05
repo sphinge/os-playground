@@ -93,9 +93,31 @@ prefetch_abort:
     LDMFD sp!, {r0-r12, pc}^
 
 data_abort:
-    STMFD sp!, {r0-r12, lr}
-    bl isr_da     //start isr_da
-    LDMFD sp!, {r0-r12, lr}
+    STMFD sp!, {r0-r12}    //save context
+    ADD lr, lr, #4
+    STMFD sp!, {lr}
+
+    BL change_SYSTEM  //save back sp, lr
+    MOV r0, sp
+    MOV r1, lr
+    BL change_ABORT
+
+    MRS r2, SPSR
+    STMFD sp!, {r0-r2}
+
+    MOV r0, sp
+    BL isr_da     //start handler
+
+    LDMFD sp!, {r0-r2}
+    MSR SPSR, r2
+
+    BL change_SYSTEM  //save back sp, lr
+    MOV sp, r0
+    MOV lr, r1
+    BL change_ABORT
+
+    LDMFD sp!, {lr}
+    LDMFD sp!, {r0-r12}
     SUBS pc, lr, #4
 
 fiq:
