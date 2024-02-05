@@ -8,6 +8,8 @@
 
 Übung 5 ist unter dem tag "uebung05" zu finden
 
+Übung 6 ist unter dem tag "uebung06" zu finden
+
 # How to use:
 
  `make build`	-- Baut den Kernel.
