@@ -1,15 +1,3 @@
-Übung 1 ist unter dem tag "uebung01" zu finden 
-
-Übung 2 ist unter dem tag "uebung02" zu finden 
-
-Übung 3 ist unter dem tag "uebung03" zu finden 
-
-Übung 4 ist unter dem tag "uebung04" zu finden
-
-Übung 5 ist unter dem tag "uebung05" zu finden
-
-Übung 6 ist unter dem tag "uebung06" zu finden
-
 # How to use:
 
  `make build`	-- Baut den Kernel.
